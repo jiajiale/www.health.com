@@ -1,0 +1,71 @@
+<layout name="Layout/dialog_layout"  replace="{__CONTENT__}" />
+
+<body style="width: 400px;">
+    <div class="pop_cont pop_table" style="height:auto;">
+        <table width="100%">
+            <tr>
+				<th>车主姓名<!--车主id--></th>
+				<td>
+                    {$carInfo.name}
+                </td>
+			</tr>
+            <tr>
+				<th>车品牌<!--车品牌--></th>
+				<td>
+                    {$carInfo.brand}
+                </td>
+			</tr>
+            <tr>
+				<th>车型号<!--车型号--></th>
+				<td>
+                    {$carInfo.model}
+                </td>
+			</tr>
+            <tr>
+				<th>车颜色<!--车颜色--></th>
+				<td>
+                    {$carInfo.color}
+                </td>
+			</tr>
+            <tr>
+				<th>车牌号<!--车牌号--></th>
+				<td>
+                    {$carInfo.plate}
+                </td>
+			</tr>
+            <tr>
+				<th>图片<!--图片--></th>
+				<td>
+                    <img src="{$carInfo.image_path}" style="width: 100px;height: 100px;">
+                </td>
+			</tr>
+            <tr>
+				<th>载客数<!--载客数--></th>
+				<td>
+                    {$carInfo.capacity}
+                </td>
+			</tr>
+            <tr>
+				<th>创建时间<!--创建时间--></th>
+				<td>
+                    {$carInfo.gmt_create}
+                </td>
+			</tr>
+            <tr>
+				<th>修改时间<!--修改时间--></th>
+				<td>
+                    {$carInfo.gmt_update}
+                </td>
+			</tr>
+            <tr>
+				<th>备注<!--备注--></th>
+				<td>
+                    {$carInfo.note}
+                </td>
+			</tr>
+        </table>
+    </div>
+    <div class="pop_bottom">
+        <button type="button" class="btn fr" id="J_dialog_close">关闭</button>
+    </div>
+</body>

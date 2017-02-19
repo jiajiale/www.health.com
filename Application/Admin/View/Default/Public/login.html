@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>欢迎登录后台管理系统</title>
+    <link  rel="stylesheet" type="text/css" href="__CSS__/layout.css"/>
+    <script type="text/javascript" src="__JS__/jquery.js"></script>
+    <style type="text/css">
+        body{
+            padding:0px;
+            background: url(__IMG__/loginbg.png) no-repeat center top #0072C6;
+            filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+            -moz-background-size:100% 100%;
+            background-size:100% 100%;
+        }
+    </style>
+</head>
+
+<script language="javascript">
+    $(function(){
+        $('.loginbox').css({'position':'absolute','left':($(window).width()-692)/2});
+        $(window).resize(function(){
+            $('.loginbox').css({'position':'absolute','left':($(window).width()-692)/2});
+        })
+    });
+</script>
+
+
+<body style="">
+
+<div class="loginbody">
+
+    <div class="systemlogo">
+        利尔达园区服务管理系统
+    </div>
+    <div class="loginbox">
+        <form action="{:U('login')}" method="post" class="login-form">
+            <ul>
+                <li><input name="username" type="text" class="loginuser" value="" onclick="JavaScript:this.value=''"/></li>
+                <li><input name="password" type="password" class="loginpwd" value="" onclick="JavaScript:this.value=''"/></li>
+                <li>
+                    <!--<input name="submit" type="submit" class="loginbtn" value="登录" />-->
+                    <button type="submit" class="loginbtn" >登录</button>
+                    <!--<label><input name="" type="checkbox" value="" checked="checked" />记住密码</label>-->
+                    <label><span class="check-tips"></span></label>
+                </li>
+            </ul>
+        </form>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        // ajax登录验证
+        $("form").submit(function(){
+            var self = $(this);
+            $.post(self.attr("action"), self.serialize(), success, "json");
+            return false;
+
+            function success(data){
+                if(data.status){
+                    window.location.href = data.url;
+                } else {
+                    self.find(".check-tips").text(data.info);
+                }
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
+

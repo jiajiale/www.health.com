@@ -1,0 +1,79 @@
+<layout name="Layout/base_layout"  replace="{__CONTENT__}" />
+
+<body>
+
+<div class="wrap">
+
+    <div class="nav">
+        <div class="form_title">
+            <span>菜单管理</span>
+        </div>
+    </div>
+
+    <div class="tools">
+        <ul class="toolbar">
+            <li><a href="{:U('add',array('parent'=>$params['parent']))}" class="btn J_dialog" title="添加菜单" data-code="menu_add">添加</a></li>
+            <if condition="isset($menu['parent'])">
+                <li><a class="btn" href="{:U('index',array('parent'=>$menu['parent']))}" title=返回" role="button"><span></span>返回</a></li>
+            </if>
+        </ul>
+    </div>
+
+    <div class="h_a">搜索</div>
+    <div class="search_type cc mb10">
+        <form action="{:U('index',array('parent'=>$params['parent']))}" method="get">
+            <ul>
+                <li><label>菜单名称</label><input name="title" type="text" class="input length_2 mr10" value="{$params.title}"></li>
+                <li><button type="submit" class="btn btn_submit mr20">搜索</button><button type="button" class="btn btn_reset ">重置</button></li>
+            </ul>
+        </form>
+    </div>
+
+    <div class="table_list">
+        <table width="100%">
+            <thead>
+            <tr>
+                <th>ID<i class="sort"><img src="__IMG__/px.gif" /></i></th>
+                <th>菜单名称</th>
+                <th>菜单地址</th>
+                <th>菜单等级</th>
+                <th>菜单编码</th>
+                <th>菜单排序</th>
+                <th>菜单状态</th>
+                <if condition="$params['grade'] lt 3">
+                    <th>子级菜单</th>
+                </if>
+                <th data-code-group="menu_edit,menu_detail,menu_del">操作</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <foreach name="list" item="menu" >
+                <tr>
+                    <td>{$menu.id}</td>
+                    <td>{$menu.name}</td>
+                    <td>{$menu.url}</td>
+                    <td>{$menu.grade}</td>
+                    <td>{$menu.code}</td>
+                    <td>{$menu.sort}</td>
+                    <td>{$menu.status|\\Common\\Util\\EnumTemplate::getEnumDesc='MenuStatus'}</td>
+                    <if condition="$params['grade'] lt 3">
+                        <td><a href="{:U('index',array('parent'=>$menu['id'],'grade'=>($menu['grade']+1)))}">[子级菜单]</a></td>
+                    </if>
+                    <td data-code-group="menu_edit,menu_detail,menu_del">
+                        <a href="{:U('edit',array('id'=>$menu['id']))}" class="tablelink J_dialog" title="修改菜单" data-code="menu_edit">[修改]</a>
+                        <a href="{:U('detail',array('id'=>$menu['id']))}" class="tablelink J_dialog" title="查看菜单" data-code="menu_detail">[查看]</a>
+                        <a href="{:U('do_del',array('id'=>$menu['id']))}" class="tablelink J_ajax_del" title="删除菜单" data-code="menu_del"> [删除]</a>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+    </div>
+
+    <include file="Public:page" />
+
+</div>
+<script type="text/javascript" src="__JS__/common.js"></script>
+
+</body>

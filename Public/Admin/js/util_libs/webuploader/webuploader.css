@@ -1,0 +1,54 @@
+.webuploader-container {
+	position: relative;
+}
+.webuploader-element-invisible {
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px,1px,1px,1px);
+}
+.webuploader-pick {
+	/*position: relative;*/
+	/*display: inline-block;*/
+	/*cursor: pointer;*/
+	/*background: #00b7ee;*/
+	/*width:70px;*/
+	/*height: 30px;*/
+	/*line-height: 30px;*/
+	/*color: #fff;*/
+	/*text-align: center;*/
+	/*border-radius: 3px;*/
+	/*overflow: hidden;*/
+
+	width: 74px;
+	height: 25px;
+	line-height: 25px;
+	margin-right: 6px;
+	overflow: hidden;
+	position: relative;
+	border: 1px solid #ddd;
+	font-size: 12px;
+	cursor: pointer;
+	color: #333333;
+	text-align: center;
+	background-color: #fdfcfc;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fdfcfc), to(#eeeeee));
+	background: -moz-linear-gradient(top, #fdfcfc, #eeeeee);
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+}
+.webuploader-pick-hover {
+	/*background: #00a2d4;*/
+	color: #333333;
+	text-decoration: none;
+	border: 1px solid #369BD7;
+	background-color: #fdfcfc;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fdfcfc), to(#e2f1fc));
+	background: -moz-linear-gradient(top, #fdfcfc, #e2f1fc);
+}
+
+.webuploader-pick-disable {
+	opacity: 0.6;
+	pointer-events:none;
+}
+

@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>欢迎登录后台管理系统</title>
+    <link  rel="stylesheet" type="text/css" href="__CSS__/layout.css"/>
+    <script type="text/javascript" src="__JS__/jquery.js"></script>
+</head>
+
+<body>
+<!--头部header区-->
+<div class="header">
+    <include file="Index:top" />
+</div>
+
+
+<!--左边导航区-->
+<div class="sidebar">
+    <include file="Index:left" />
+</div>
+
+<div class="crumbs">
+    <span>位置：</span>
+    <ul>
+        <li><a href="javascript:void(0)" class="one-level">首页</a></li>
+        <li><a href="javascript:void(0)" class="second-level">系统管理</a></li>
+        <li><a href="javascript:void(0)" class="third-level">平台管理</a></li>
+        <li><a href="javascript:void(0)" class="forth-level">基本内容</a></li>
+    </ul>
+</div>
+
+<!--内容区-->
+<div class="main" data-href="{:U('main')}">
+</div>
+<script type="text/javascript">
+    $(function(){
+        var html = [];
+        var MENU_ITEMS = {$menuTree};
+
+        // 顶部导航菜单显示
+        $.each(MENU_ITEMS,function(index,item){
+            html.push("<li><a href='javascript:void(0)' data-id='"+ index +"' target='rightFrame'><img src='__IMG__/icon0"+ (item.sort) +".png' title='"+ item.name +"'/><h2>" + item.name + "</h2></a></li>")
+        });
+
+        $('#top_nav').html(html.join(''));
+
+        // 顶部导航菜单点击
+        $('#top_nav li').on('click',function(e){
+            e.preventDefault();
+            e.stopPropagation();
+
+            $(this).find('a').addClass('selected');
+            $(this).siblings().find('a').removeClass('selected');
+
+            var data_id = $(this).find('a').data('id');
+            var data_list = MENU_ITEMS[data_id];
+            var html = [];
+
+            $(".second-level").text($(this).find('h2').text());
+            $(".third-level").text(MENU_ITEMS[data_id]['childrens'][0]['name']);
+            $(".forth-level").text(MENU_ITEMS[data_id]['childrens'][0]['childrens'][0]['name']);
+
+            show_left_menu(data_list);
+            $('#left_nav').html(html.join(''));
+
+            // 显示左侧导航
+            function show_left_menu(data){
+
+                $.each(data.childrens,function(index,item){
+                    html.push("<dd><div class='title'><span><img src='__IMG__/leftico01.png' /></span>"+ item.name +"</div>");
+                    html.push("<ul class='menuson'>");
+                    $.each(item.childrens,function(i,o){
+                        html.push("<li><cite></cite><a href='"+ o.url +"' target='rightFrame' title='"+ o.name +"'>"+ o.name +"</a><i></i></li>");
+                    });
+                    html.push("</ul></dd>");
+                });
+            }
+
+            //左边sidebar切换
+            $(".menuson li").on('click',function(){
+                $(".menuson li.active").removeClass("active")
+                $(this).addClass("active");
+                $(".forth-level").text($(this).find('a').text());
+            });
+
+        });
+
+        $('#top_nav li:first').click();
+    });
+</script>
+<script type="text/javascript">
+
+    $(function(){
+
+        $('.title').live('click',function(){
+            $(".third-level").text($(this).text());
+            $(".forth-level").text($(this).next('ul').find('li').first().text());
+            var $ul = $(this).next('ul');
+            $('dd').find('ul').slideUp();
+            if($ul.is(':visible')){
+                $(this).next('ul').slideUp();
+            }else{
+                $(this).next('ul').slideDown();
+            }
+        });
+
+        //左边sidebar切换
+//        $(".menuson li").live('click',function(){
+//            $(".menuson li.active").removeClass("active")
+//            $(this).addClass("active");
+//        });
+
+
+        var defaulhref = $('.main').data('href');
+        var iframeAttr = {
+            src: defaulhref,
+            id: 'iframepage',
+            frameborder: '0',
+            scrolling: 'auto',
+            width: '100%',
+            height: '100%'
+        };
+        $('.main iframe').remove();
+        var iframe = $('<iframe/>').prop(iframeAttr).appendTo('.main');
+
+
+        //点击菜单加载iframe
+        $('.leftmenu').on('click','a',function(e){
+            e.preventDefault();
+            e.stopPropagation();
+
+            var $this = $(this),id = $this.attr('data-id');
+            var href = this.href;
+
+            var iframeAttr = {
+                src: href,
+                id: 'iframepage',
+                frameborder: '0',
+                scrolling: 'auto',
+                width: '100%',
+                height: '100%'
+            };
+            $('.main iframe').remove();
+            var iframe = $('<iframe/>').prop(iframeAttr).appendTo('.main');
+
+        });
+
+    })
+</script>
+</body>
+</html>

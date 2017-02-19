@@ -1,0 +1,39 @@
+<layout name="Layout/dialog_layout"  replace="{__CONTENT__}" />
+
+<body style="width: 400px;height: 250px;">
+<form class="J_validateForm J_ajaxForm" data-role="list" action="{:U('menu/do_edit')}" method="post">
+    <input type="hidden" name="id" value="{$menu.id}" />
+    <div class="pop_cont pop_table" style="height:auto;">
+        <table width="100%">
+            <tr>
+                <th>菜单名称</th>
+                <td>
+                    <input type="text" name="name" class="input length_4" value="{$menu.name}">
+                </td>
+            </tr>
+            <tr>
+                <th>菜单地址</th>
+                <td>
+                    <input type="text" name="url" class="input length_4" value="{$menu.url}">
+                </td>
+            </tr>
+            <tr>
+                <th>菜单排序</th>
+                <td>
+                    <input type="text" name="sort" class="input length_4" value="{$menu.sort}">
+                </td>
+            </tr>
+            <tr>
+                <th>权限编码</th>
+                <td>
+                    <input type="text" name="code" class="input length_4" value="{$menu.code}">
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="pop_bottom">
+        <button type="button" class="btn fr" id="J_dialog_close">取消</button>
+        <button type="submit" class="btn btn_submit mr10 fr J_ajax_submit_btn J_validate_btn">提交</button>
+    </div>
+</form>
+</body>

@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+  Options +FollowSymlinks
+  RewriteEngine On
+
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.*)$ index.php/$1 [QSA,PT]
+  RewriteRule ^index.php/senthink-shareCar/(.*)$ $1 [QSA,PT,L,NC]
+  RewriteRule ^index.php/tuan/(.*)$ $1 [QSA,PT,L,NC]
+  RewriteRule ^index.php/com/(.*)$ $1 [QSA,PT,L,NC]
+  RewriteRule ^index.php/huo/(.*)$ $1 [QSA,PT,L,NC]
+</IfModule>

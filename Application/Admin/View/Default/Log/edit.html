@@ -1,0 +1,81 @@
+<layout name="Layout/dialog_layout"  replace="{__CONTENT__}" />
+
+<body style="width: 400px;">
+<form class="J_validateForm J_ajaxForm" data-role="list" action="{:U('log/do_edit')}" method="post">
+    <input type="hidden" name="id" value="{$log.id}" />
+    <div class="pop_cont pop_table" style="height:auto;">
+        <table width="100%">
+            <tr>
+				<th>用户类型<!--用户类型--></th>
+				<td>
+                    <input type="text" name="account_type" class="input length_3" value="{$log.account_type}">
+                <td>
+			</tr>
+            <tr>
+				<th>用户ID<!--用户ID--></th>
+				<td>
+                    <input type="text" name="account_id" class="input length_3" value="{$log.account_id}">
+                <td>
+			</tr>
+            <tr>
+				<th>用户名<!--用户名--></th>
+				<td>
+                    <input type="text" name="operate_name" class="input length_6" value="{$log.operate_name}">
+                <td>
+			</tr>
+            <tr>
+				<th>请求参数<!--请求参数--></th>
+				<td>
+                    <textarea class="length_6" name="operateParams">{$log.operate_params}</textarea>
+                <td>
+			</tr>
+            <tr>
+				<th>请求地址<!--请求地址--></th>
+				<td>
+                    <input type="text" name="operate_url" class="input length_6" value="{$log.operate_url}">
+                <td>
+			</tr>
+            <tr>
+				<th>IP<!--IP--></th>
+				<td>
+                    <input type="text" name="ip" class="input length_6" value="{$log.ip}">
+                <td>
+			</tr>
+            <tr>
+				<th>Target<!----></th>
+				<td>
+                    <input type="text" name="target" class="input length_6" value="{$log.target}">
+                <td>
+			</tr>
+            <tr>
+				<th>操作内容<!--操作内容--></th>
+				<td>
+                    <input type="text" name="operate" class="input length_6" value="{$log.operate}">
+                <td>
+			</tr>
+            <tr>
+				<th>操作时间<!--操作时间--></th>
+				<td>
+                    <input type="text" name="gmt_operate" class="input length_3 J_datetime date" value="{$log.gmt_operate}">
+                <td>
+			</tr>
+            <tr>
+				<th>状态<!--状态--></th>
+				<td>
+                    <input type="text" name="status" class="input length_3" value="{$log.status}">
+                <td>
+			</tr>
+            <tr>
+				<th>备注<!--备注--></th>
+				<td>
+                    <input type="text" name="note" class="input length_6" value="{$log.note}">
+                <td>
+			</tr>
+        </table>
+    </div>
+    <div class="pop_bottom">
+        <button type="button" class="btn fr" id="J_dialog_close">取消</button>
+        <button type="submit" class="btn btn_submit mr10 fr J_ajax_submit_btn J_validate_btn">提交</button>
+    </div>
+</form>
+</body>

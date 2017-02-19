@@ -1,0 +1,64 @@
+<layout name="Layout/base_layout"  replace="{__CONTENT__}" />
+
+<body>
+
+<div class="wrap">
+
+    <div class="nav">
+        <div class="form_title">
+            <span>角色管理</span>
+        </div>
+    </div>
+
+    <div class="tools">
+        <ul class="toolbar">
+            <li><a href="{:U('add')}" class="btn" title="添加角色">添加</a></li>
+        </ul>
+    </div>
+
+    <div class="h_a">搜索</div>
+    <div class="search_type cc mb10">
+        <form action="{:U('index')}" method="get">
+            <ul>
+                <li><label>角色名称</label><input name="name" type="text" class="input length_2 mr10" value="{$params.name}"></li>
+                <li><button type="submit" class="btn btn_submit mr20">搜索</button><button type="button" class="btn btn_reset ">重置</button></li>
+            </ul>
+        </form>
+    </div>
+
+    <div class="table_list">
+        <table width="100%">
+            <thead>
+            <tr>
+                <th><input name="" type="checkbox" value="" checked="checked"/></th>
+                <th>ID<i class="sort"><img src="__IMG__/px.gif" /></i></th>
+                <th>角色名称</th>
+                <th>角色类型</th>
+                <th>角色状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <foreach name="list" item="role" >
+                <tr>
+                    <td><input name="" type="checkbox" value="" /></td>
+                    <td>{$role.id}</td>
+                    <td>{$role.name}</td>
+                    <td>{$role.type|\\Common\\Util\\EnumTemplate::getEnumDesc='RoleType'}</td>
+                    <td>{$role.status|\\Common\\Util\\EnumTemplate::getEnumDesc='RoleStatus'}</td>
+                    <td>
+                        <a href="{:U('edit',array('id'=>$role['id']))}" class="tablelink" title="修改角色">[修改]</a>
+                        <a href="{:U('do_del',array('id'=>$role['id']))}" class="tablelink J_ajax_del" title="删除角色"> [删除]</a></td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+    </div>
+
+    <include file="Public:page" />
+
+</div>
+<script type="text/javascript" src="__JS__/common.js"></script>
+
+</body>

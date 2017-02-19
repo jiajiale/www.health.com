@@ -1,0 +1,62 @@
+<layout name="Layout/base_layout"  replace="{__CONTENT__}" />
+
+<body>
+
+<div class="wrap">
+    <form class="J_validateForm J_ajaxForm" data-role="list" action="{:U('role/do_add')}" method="post">
+    <div class="h_a">添加角色</div>
+    <div class="table_full">
+        <table width="100%" class="J_check_wrap">
+            <col class="th"/>
+            <col/>
+            <tr>
+                <th>类型</th>
+                <td>
+                    {$role.type|\\Common\\Util\\EnumTemplate::enumSelect='RoleType',false,'type','select'}
+                </td>
+            </tr>
+            <tr>
+                <th>名称</th>
+                <td>
+                    <input type="text" name="name" class="input length_4" value="">
+                </td>
+            </tr>
+            <tr>
+                <th>状态</th>
+                <td>
+                    {$role.status|\\Common\\Util\\EnumTemplate::enumSelect='RoleStatus',false,'status','select'}
+                </td>
+            </tr>
+
+            <foreach name="modules_list" item="module">
+            <tr>
+                <th><label><input name="modules[]" id="J_role_$key" data-direction="x" data-checklist="J_check_{$module.module_val}"
+                                  type="checkbox" class="checkbox J_check_all"
+                                  value="{$module.module_val}"><span>{$module.module_key}</span></label></th>
+                <td>
+                    <ul data-name="custom" class="three_list cc J_ul_check">
+                        <foreach name="module['permissions']" item="permission">
+                        <li><label><input name="permissions[]" data-xid="J_check_{$module.module_val}" class="J_check"
+                                          type="checkbox"
+                                          value="{$permission.id}"><span>{$permission.name}</span></label>
+                        </li>
+                        </foreach>
+                    </ul>
+                </td>
+            </tr>
+            </foreach>
+
+        </table>
+    </div>
+    <div class="btn_wrap">
+        <div class="btn_wrap_pd">
+            <button type="submit" class="btn btn_submit mr10 J_ajax_submit_btn J_validate_btn">提交</button>
+        </div>
+    </div>
+    </form>
+
+</div>
+<script type="text/javascript" src="__JS__/common.js"></script>
+
+</body>
+

@@ -1,0 +1,47 @@
+<assign name="startIndex" value="1" />
+<assign name="endIndex" value="$pager.count" />
+<assign name="p" value="$pager['count']-5" />
+
+<if condition="$pager.index gt 9">
+    <assign name="startIndex" value="$pager['index']-5" />
+</if>
+<if condition="$pager.index lt $p">
+    <assign name="endIndex" value="$pager['index']+5" />
+</if>
+
+<if condition="isset($pager)">
+<div class="pages">
+    <div class="message">共<i class="blue">&nbsp;{$pager.total}&nbsp;</i>条记录，当前显示第&nbsp;<i class="blue">{$pager.index}&nbsp;</i>页</div>
+    <ul class="pageList">
+        <if condition="$pager.index gt 1">
+            <li class="pageItem"><a href="{:U('index',array_merge($params,array('page_index'=>($pager['index']-1))))}"><span class="pagepre"></span></a></li>
+        </if>
+
+        <if condition="$startIndex gt 1">
+            <assign name="sp" value="$startIndex-1" />
+            <li class="pageItem"><a href="{:U('index',array_merge($params,array('page_index'=>'1')))}">1</a></li>
+            <li class="pageItem"><a href="{:U('index',array_merge($params,array('page_index'=>$sp)))}">...</a></li>
+        </if>
+
+        <for start="$startIndex" end="$endIndex+1">
+            <if condition="$pager.index eq ($i)">
+                <li class="pageItem current"><a href="{:U('index',array_merge($params,array('page_index'=>($i))))}">{$i}</a></li>
+            <else />
+                <li class="pageItem"><a href="{:U('index',array_merge($params,array('page_index'=>($i))))}">{$i}</a></li>
+            </if>
+
+        </for>
+
+        <if condition="$endIndex lt $pager['count']">
+            <assign name="ep" value="$endIndex" />
+            <li class="pageItem"><a href="{:U('index',array_merge($params,array('page_index'=>$ep)))}">...</a></li>
+            <li class="pageItem"><a href="{:U('index',array_merge($params,array('page_index'=>$pager['count'])))}">{$pager.count}</a></li>
+        </if>
+
+        <if condition="$pager.index lt $pager['count']">
+            <li class="pageItem"><a href="{:U('index',array_merge($params,array('page_index'=>($pager['index']+1))))}"><span class="pagenext"></span></a></li>
+        </if>
+    </ul>
+
+</div>
+</if>

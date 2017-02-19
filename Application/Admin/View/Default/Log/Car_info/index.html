@@ -1,0 +1,92 @@
+<layout name="Layout/base_layout"  replace="{__CONTENT__}" />
+
+<body>
+
+<div class="wrap">
+
+    <div class="nav">
+        <div class="form_title">
+            <span>车辆管理</span>
+        </div>
+    </div>
+
+    <div class="tools">
+        <ul class="toolbar">
+            <li><a href="{:U('add')}" class="btn J_dialog" title="添加车辆" data-code="car_info_add">添加</a></li>
+            <if condition="$params['goback']">
+                <li><a class="btn" href="javascript:history.go(-1)" title=返回" role="button"><span></span>返回</a></li>
+            </if>
+        </ul>
+    </div>
+    <div class="h_a">搜索</div>
+    <div class="search_type cc mb10">
+        <form action="{:U('index')}" method="get">
+            <if condition="$params['user_id']">
+                <input type="hidden" name="user_id" value="{$params.user_id}"/>
+            </if>
+            <ul>
+                <if condition="empty($params['user_id'])">
+                <li><label>车主姓名<!--车主id--></label><input name="user_name" type="text" class="input mr10 length_2" value="{$params.user_name}"></li>
+                </if>
+                <li><label>车品牌<!--车品牌--></label><input name="brand" type="text" class="input mr10 length_2" value="{$params.brand}"></li>
+                <li><label>车型号<!--车型号--></label><input name="model" type="text" class="input mr10 length_2" value="{$params.model}"></li>
+                <li><label>车牌号<!--车牌号--></label><input name="plate" type="text" class="input mr10 length_2" value="{$params.plate}"></li>
+                <li><button type="submit" class="btn btn_submit mr20">搜索</button><button type="button" class="btn btn_reset ">重置</button></li>
+            </ul>
+        </form>
+    </div>
+
+    <div class="table_list">
+        <table width="100%">
+            <thead>
+            <tr>
+                <th>ID<i class="sort"><img src="__IMG__/px.gif" /></i></th>
+                <th>车主姓名<!--车主id--></th>
+                <th>车主电话<!--车主id--></th>
+                <th>车辆品牌<!--车品牌--></th>
+                <th>车辆型号<!--车型号--></th>
+                <th>车辆颜色<!--车颜色--></th>
+                <th>车辆牌号<!--车牌号--></th>
+                <th>载客数<!--载客数--></th>
+                <th>行程信息<!--载客数--></th>
+                <th>修改时间<!--修改时间--></th>
+                <th>备注<!--备注--></th>
+                <th data-code-group="car_info_edit,car_info_detail,car_info_del">操作</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <foreach name="list" item="car_info" >
+                <tr>
+                    <td>{$car_info.id}</td>
+                    <if condition="$car_info['user_id']">
+                        <td><a href="{:U('car_user/detail',array('id'=>$car_info['user_id']))}" class="J_dialog J_dialog_tips" data-content="点击查看车主详细信息">{$car_info.name}</a></td>
+                    <else/>
+                        <td>{$car_info.name}</td>
+                    </if>
+                    <td>{$car_info.mobile|str_replace=',','<br/>',###}</td>
+                    <td>{$car_info.brand}</td>
+                    <td>{$car_info.model}</td>
+                    <td>{$car_info.color}</td>
+                    <td>{$car_info.plate}</td>
+                    <td>{$car_info.capacity}</td>
+                    <td><a href="{:U('route/index',array('car_id'=>$car_info['id'],'goback'=>true))}" class="J_dialog_tips" data-content="点击查看与该车相关的行程信息">[行程信息]</a></td>
+                    <td>{$car_info.gmt_update}</td>
+                    <td>{$car_info.note}</td>
+                    <td data-code-group="car_info_edit,car_info_detail,car_info_del">
+                        <a href="{:U('edit',array('id'=>$car_info['id']))}" class="tablelink J_dialog" title="修改车辆" data-code="car_info_edit">[修改]</a>
+                        <a href="{:U('detail',array('id'=>$car_info['id']))}" class="tablelink J_dialog" title="查看车辆" data-code="car_info_detail">[查看]</a>
+                        <a href="{:U('do_del',array('id'=>$car_info['id']))}" class="tablelink J_ajax_del" title="删除车辆" data-code="car_info_del"> [删除]</a>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+    </div>
+
+    <include file="Public:page" />
+
+</div>
+<script type="text/javascript" src="__JS__/common.js"></script>
+
+</body>

@@ -1,0 +1,54 @@
+<layout name="Layout/dialog_layout"  replace="{__CONTENT__}" />
+
+<body style="width: 400px;">
+<form class="J_validateForm J_ajaxForm" data-role="list" action="{:U('manager_account/do_add')}" method="post">
+    <div class="pop_cont pop_table" style="height:auto;">
+        <table width="100%">
+            <tr>
+                <th>用户名</th>
+                <td>
+                    <input type="text" name="username" class="input length_4" value="">
+                </td>
+            </tr>
+            <tr>
+                <th>密码</th>
+                <td>
+                    <input type="password" name="password" class="input length_4" value="">
+                </td>
+            </tr>
+            <tr>
+                <th>昵称</th>
+                <td>
+                    <input type="text" name="name" class="input length_4" value="">
+                </td>
+            </tr>
+            <tr>
+                <th>手机</th>
+                <td>
+                    <input type="text" name="mobile" class="input length_4" value="">
+                </td>
+            </tr>
+            <tr>
+                <th>状态</th>
+                <td>
+                    {$manager_account.status|\\Common\\Util\\EnumTemplate::enumSelect='ManagerAccountStatus',false,'status','select'}
+                </td>
+            </tr>
+            <tr>
+                <th>角色</th>
+                <td>
+                    <select name="role_id">
+                        <foreach name="roles" item="item">
+                            <option value="{$item.id}">{$item.name}</option>
+                        </foreach>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="pop_bottom">
+        <button type="button" class="btn fr" id="J_dialog_close">取消</button>
+        <button type="submit" class="btn btn_submit mr10 fr J_ajax_submit_btn J_validate_btn">提交</button>
+    </div>
+</form>
+</body>

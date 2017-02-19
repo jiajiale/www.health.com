@@ -1,0 +1,27 @@
+<layout name="Layout/dialog_layout"  replace="{__CONTENT__}" />
+
+<body style="width: 400px;height: 250px;">
+    <div class="pop_cont pop_table" style="height:auto;">
+        <table width="100%">
+            <tr>
+                <th>菜单名称</th>
+                <td>{$menu.title}</td>
+            </tr>
+            <tr>
+                <th>菜单地址</th>
+                <td>{$menu.url}</td>
+            </tr>
+            <tr>
+                <th>菜单排序</th>
+                <td>{$menu.sort}</td>
+            </tr>
+            <tr>
+                <th>权限编码</th>
+                <td>{$menu.sort|\\Common\\Util\\EnumTemplate::enumSelect='MenuStatus','全部','status','select'}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="pop_bottom">
+        <button type="button" class="btn fr" id="J_dialog_close">关闭</button>
+    </div>
+</body>

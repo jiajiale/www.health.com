@@ -1,0 +1,57 @@
+<layout name="Layout/dialog_layout"  replace="{__CONTENT__}" />
+
+<body style="width: 400px;">
+<form class="J_validateForm J_ajaxForm" data-role="list" action="{:U('car_info/do_edit')}" method="post">
+    <input type="hidden" name="id" value="{$carInfo.id}" />
+    <div class="pop_cont pop_table" style="height:auto;">
+        <table width="100%">
+            <tr>
+				<th>车主姓名<!--车主id--></th>
+				<td>
+                    {$carInfo.name}
+                <td>
+			</tr>
+            <tr>
+				<th>车品牌<!--车品牌--></th>
+				<td>
+                    <input type="text" name="brand" class="input length_3" value="{$carInfo.brand}">
+                <td>
+			</tr>
+            <tr>
+				<th>车型号<!--车型号--></th>
+				<td>
+                    <input type="text" name="model" class="input length_3" value="{$carInfo.model}">
+                <td>
+			</tr>
+            <tr>
+				<th>车颜色<!--车颜色--></th>
+				<td>
+                    <input type="text" name="color" class="input length_3" value="{$carInfo.color}">
+                <td>
+			</tr>
+            <tr>
+				<th>车牌号<!--车牌号--></th>
+				<td>
+                    <input type="text" name="plate" class="input length_3" value="{$carInfo.plate}">
+                <td>
+			</tr>
+            <tr>
+				<th>载客数<!--载客数--></th>
+				<td>
+                    <input type="text" name="capacity" class="input length_3" value="{$carInfo.capacity}">
+                <td>
+			</tr>
+            <tr>
+				<th>备注<!--备注--></th>
+				<td>
+                    <input type="text" name="note" class="input length_3" value="{$carInfo.note}">
+                <td>
+			</tr>
+        </table>
+    </div>
+    <div class="pop_bottom">
+        <button type="button" class="btn fr" id="J_dialog_close">取消</button>
+        <button type="submit" class="btn btn_submit mr10 fr J_ajax_submit_btn J_validate_btn">提交</button>
+    </div>
+</form>
+</body>

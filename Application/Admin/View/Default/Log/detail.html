@@ -1,0 +1,77 @@
+<layout name="Layout/dialog_layout"  replace="{__CONTENT__}" />
+
+<body style="width: 400px;">
+    <div class="pop_cont pop_table" style="height:auto;">
+        <table width="100%">
+            <tr>
+				<th>用户类型<!--用户类型--></th>
+				<td>
+                    {$log.account_type}
+                </td>
+			</tr>
+            <tr>
+				<th>用户ID<!--用户ID--></th>
+				<td>
+                    {$log.account_id}
+                </td>
+			</tr>
+            <tr>
+				<th>用户名<!--用户名--></th>
+				<td>
+                    {$log.operate_name}
+                </td>
+			</tr>
+            <tr>
+				<th>请求参数<!--请求参数--></th>
+				<td>
+                    {$log.operate_params}
+                </td>
+			</tr>
+            <tr>
+				<th>请求地址<!--请求地址--></th>
+				<td>
+                    {$log.operate_url}
+                </td>
+			</tr>
+            <tr>
+				<th>IP<!--IP--></th>
+				<td>
+                    {$log.ip}
+                </td>
+			</tr>
+            <tr>
+				<th>Target<!----></th>
+				<td>
+                    {$log.target}
+                </td>
+			</tr>
+            <tr>
+				<th>操作内容<!--操作内容--></th>
+				<td>
+                    {$log.operate}
+                </td>
+			</tr>
+            <tr>
+				<th>操作时间<!--操作时间--></th>
+				<td>
+                    {$log.gmt_operate|date='y-m-d H:i:s',###}
+                </td>
+			</tr>
+            <tr>
+				<th>状态<!--状态--></th>
+				<td>
+                    {$log.status}
+                </td>
+			</tr>
+            <tr>
+				<th>备注<!--备注--></th>
+				<td>
+                    {$log.note}
+                </td>
+			</tr>
+        </table>
+    </div>
+    <div class="pop_bottom">
+        <button type="button" class="btn fr" id="J_dialog_close">关闭</button>
+    </div>
+</body>
