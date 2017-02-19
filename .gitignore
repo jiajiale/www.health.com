@@ -1,3 +1,4 @@
 Runtime
 /Public/uploads
 .idea
+/Application/Common/Conf/config.php
