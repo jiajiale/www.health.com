@@ -42,6 +42,7 @@ return array(
         'DB_USER' => 'root', // 用户名
         'DB_PWD' => 'root', // 密码Rm97rdZGJz/w
         'DB_PORT' => '3306', // 端口
+        'DB_PARAMS' => array(\PDO::ATTR_CASE => \PDO::CASE_NATURAL)
     ),
 
     //邮件配置

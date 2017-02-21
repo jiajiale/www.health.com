@@ -18,8 +18,6 @@ class BaseController
 
     protected $fields;
 
-    protected $serialNum;
-
     protected $request;
 
 
@@ -39,8 +37,6 @@ class BaseController
 
         $this->validator = new Validator($this->request);
 
-        $this->serialNum = $this->request['serialNum'];
-
         //控制器初始化
         if(method_exists($this,'_initialize'))
             $this->_initialize();
@@ -50,16 +46,17 @@ class BaseController
     /**
      * 验证数据
      * @param bool $message
+     * @param string $code
      */
-    public function validate($message = false)
+    public function validate($message = false, $code = '401')
     {
         if (!$this->validator->validate()) {
 
             if ($message) {
-                $this->apiError($message, 9007);
+                $this->apiError($message, $code);
             }
 
-            $this->apiError($this->validator->errors(), 9007);
+            $this->apiError($this->validator->errors(), $code);
         }
         $this->validator->clearRule();
     }
@@ -104,7 +101,7 @@ class BaseController
     }
 
     //预留处理
-    public function apiReturn($data = '',$class, $is_lost = 0, $msg = '', $code = '')
+    public function apiReturn($data = '',$class, $msg = '', $code = '')
     {
         $apiData = array();
         $apiData['code'] = $code;
@@ -114,8 +111,6 @@ class BaseController
         }
 
         $apiData['msg'] = $msg;
-        $apiData['is_lost'] = $is_lost;
-        $apiData['serialNum'] = $this->serialNum;
 
         if(!is_null($data) || $data != ''){
             if (method_exists($data, 'getItems')) {
@@ -141,7 +136,7 @@ class BaseController
             case 'JSON':
                 header('Content-Type:application/json; charset=utf-8');
                 $json = __json_encode($apiData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                //$json = json_format($json);
+                $json = json_format($json);
                 $result = $json;
                 break;
             case 'JSONP':
@@ -163,24 +158,24 @@ class BaseController
     }
 
     //成功返回
-    public function apiSuccess($data = null, $class = 'data' ,$msg = '')
+    public function apiSuccess($data = null, $class = 'obj' ,$msg = '')
     {
         if (!$msg) {
             $msg = "success";
         }
-        $this->apiReturn($data, $class ,0, $msg, 8001);
+        $this->apiReturn($data, $class , $msg, 200);
     }
 
     //错误返回
     public function apiError($msg = '', $code = 0)
     {
-        $this->apiReturn(null, 'data' ,9003, $msg, $code);
+        $this->apiReturn(null, 'data', $msg, $code);
     }
 
     //默认找不到接口
     public function _empty()
     {
-        $this->apiReturn("", "data",0, "找不到接口", 500);
+        $this->apiReturn("", "data","找不到接口", 500);
     }
 
     /**
@@ -222,18 +217,6 @@ class BaseController
             return $source;
         }
         return '';
-    }
-
-
-    /**
-     * 检查重复请求
-     */
-    public function check_duplicate(){
-        if($this->serialNum == S('serialNum')){
-            exit();
-        }else{
-            S('serialNum',$this->serialNum);
-        }
     }
 
     /**
