@@ -167,7 +167,7 @@ class BaseController
     }
 
     //错误返回
-    public function apiError($msg = '', $code = 0)
+    public function apiError($msg = '', $code = 401)
     {
         $this->apiReturn(null, 'data', $msg, $code);
     }
