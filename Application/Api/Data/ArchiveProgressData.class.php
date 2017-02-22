@@ -43,4 +43,38 @@ class ArchiveProgressData extends BaseData{
 
         return $data;
     }
+
+    /**
+     * 读取每日任务
+     * @param $conditions
+     * @return mixed
+     */
+    public function getArchiveDayTask($conditions){
+        $where = $this->getCondition($conditions);
+
+        $data = $this->table('__ACHIVEPROGRESS__ as progress')
+            ->field('progress.dayFoot,dataTask.dayRelease,dataTask.daycomment')
+            ->join('__DAYTASK__ as dataTask ON dataTask.userID = progress.userID')
+            ->where($where)
+            ->find();
+
+        return $data;
+    }
+
+    /**
+     * 读取目前成就进度
+     * @param $conditions
+     * @return mixed
+     */
+    public function getArchiveProgress($conditions){
+        $where = $this->getCondition($conditions);
+
+        $data = $this->table('__ACHIVEPROGRESS__ as progress')
+            ->field('progress.*,dataTask.dayRelease,dataTask.daycomment')
+            ->join('__DAYTASK__ as dataTask ON dataTask.userID = progress.userID')
+            ->where($where)
+            ->find();
+
+        return $data;
+    }
 }
