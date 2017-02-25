@@ -11,7 +11,7 @@ class BaseLogic
     // 最近错误信息
     protected $error = '操作失败';
     // 最近错误编号
-    protected $code = 9014;
+    protected $code = 401;
 
     /**
      * @return int

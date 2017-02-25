@@ -35,6 +35,15 @@ class UserLogic extends BaseLogic{
     }
 
     /**
+     * 获取用户的成就进度信息
+     * @param $conditions
+     * @return mixed
+     */
+    public function getUserAchieveInfo($conditions){
+        return $this->userData->getUserAchieveInfo($conditions);
+    }
+
+    /**
      * 获取完整的用户资料
      * @param $conditions
      * @return array

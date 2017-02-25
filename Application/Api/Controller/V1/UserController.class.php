@@ -344,4 +344,63 @@ class UserController extends BaseController{
             $this->apiError('未找到相关用户');
         }
     }
+
+    /**
+     * 更新成就进度
+     */
+    public function updateAchieve(){
+        $this->validator->rule('required', 'userID');
+        $this->validate('请输入userID');
+        $this->validator->rule('required', 'userMoney');
+        $this->validate('请输入userMoney');
+        $this->validator->rule('required', 'userDiamond');
+        $this->validate('请输入userDiamond');
+        $this->validator->rule('required', 'userEXP');
+        $this->validate('请输入userEXP');
+        $this->validator->rule('required', 'achivePoint');
+        $this->validate('请输入achivePoint');
+
+        $data = $this->getAvailableData();
+
+        $Achiveprogress = D('Achiveprogress');
+        $UserInformation = D('Userinformation');
+
+        $achieveInfo = $this->userLogic->getUserAchieveInfo($data);
+
+        if($achieveInfo){
+            $Achiveprogress->startTrans();  // 开启事务
+            $flag1 = $Achiveprogress->where("userID = %d",$data['userID'])->setField("achivePoint",$data['achivePoint']);
+
+            $flag2 = $UserInformation->where("userID = %d",$data['userID'])->save(array(
+                "userMoney" => $achieveInfo['userMoney'] + $data['userMoney'],
+                "userDiamond" => $achieveInfo['userDiamond'] + $data['userDiamond'],
+                "userEXP" => $achieveInfo['userEXP'] + $data['userEXP'],
+                "userAllMoney" => $achieveInfo['userAllMoney'] + $data['userMoney']
+            ));
+
+            $flag3 = $Achiveprogress->where("userID = %d",$data['userID'])->setField("achivePoint",$achieveInfo["achivePoint"] + $data["achivePoint"]);
+
+            if($flag1 !== false && $flag2 !== false && $flag3 !== false){
+                $Achiveprogress->commit();  // 提交事务
+                $this->apiSuccess('更新成就进度成功');
+            }else{
+                $Achiveprogress->rollback();    // 事务回滚
+                $this->apiError('更新成就进度失败');
+            }
+        }else{
+            $this->apiError('未找到相关用户信息');
+        }
+    }
+
+    /**
+     * 获取排行榜信息
+     */
+    public function getUserRanking(){
+        $this->validator->rule('required', 'userID');
+        $this->validate('请输入userID');
+        $this->validator->rule('required', 'condition');
+        $this->validate('请输入userMoney');
+
+        $data = $this->getAvailableData();
+    }
 }

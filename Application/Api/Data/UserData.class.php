@@ -62,4 +62,21 @@ class UserData extends BaseData{
 
         return $data;
     }
+
+    /**
+     * 获取用户的成就进度信息
+     * @param $conditions
+     * @return mixed
+     */
+    public function getUserAchieveInfo($conditions){
+        $where = $this->getCondition($conditions);
+
+        $data = $this->table('__USERINFORMATION__ AS user')
+            ->field('a.userMoney, a.userAllMoney, a.userDiamond, a.userExp,b.achivePoint')
+            ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = user.userID')
+            ->where($where)
+            ->find();
+
+        return $data;
+    }
 }
