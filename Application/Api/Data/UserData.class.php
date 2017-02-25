@@ -40,4 +40,26 @@ class UserData extends BaseData{
 
         return $data;
     }
+
+    /**
+     * 获取用户直接的点赞信息
+     * @param $conditions
+     * @return mixed
+     */
+    public function getUserLikeInfo($conditions){
+        $where = array();
+
+        if (isset($conditions['userID']) && !empty($conditions['userID'])) {
+            $where['userzan.friendID'] = array('EQ', $conditions['userID']);
+        }
+
+        $data = $this->table('__USERINFORMATION__ AS user')
+            ->field('user.userID,user.userName,user.userLV,user.userSign,user.userGlory,user.userHead,userzan.zanDate')
+            ->join('__USERZAN__ as userzan ON userzan.userID = user.userID')
+            ->where($where)
+            ->order('userzan.zanDate DESC')
+            ->select();
+
+        return $data;
+    }
 }

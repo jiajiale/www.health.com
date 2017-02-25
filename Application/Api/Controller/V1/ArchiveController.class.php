@@ -39,7 +39,39 @@ class ArchiveController extends BaseController{
      * @param $data
      */
     public function getAchievements($data){
+        $this->validator->rule('required', 'userID');
+        $this->validate('请输入userID');
 
+        $SuccessAchive = D('Successachive');
+
+        $arrayInfor = array();
+        for($i=0; $i < 4; $i++) {
+
+            $arraytwo = array();
+            $indextwo = 0;
+            for ($j=0; $j < 6; $j++) {
+
+                $result = $SuccessAchive->where("userID = %d AND achiveFirst = %d AND achiveSecond = %d",array($data['userID'],$i,$j))->order('achiveID')->select();
+
+                $arraytwo[$indextwo] = $result;
+                $indextwo ++;
+
+                if($i == 2 && $j == 4){
+                    break;
+                }
+                if($i == 3 && $j == 1){
+                    break;
+                }
+                if($i == 0 && $j == 0){
+                    break;
+                }
+
+            }
+
+            $arrayInfor[$i] = $arraytwo;
+        }
+
+        $this->apiSuccess(array('info' => $arrayInfor));
     }
 
     /**
@@ -87,7 +119,7 @@ class ArchiveController extends BaseController{
 
                     break;
                 case 5:
-
+                    $this->getSignAward($data);
                     break;
                 case 6:
                     $this->getDailyTask($data);
@@ -120,6 +152,43 @@ class ArchiveController extends BaseController{
         }else{
             $this->apiError('领取奖励成功');
         }
+    }
+
+    /**
+     * 领取签到奖励
+     * @param $data
+     */
+    public function getSignAward($data){
+        $this->validator->rule('required', 'userID');
+        $this->validate('请输入userID');
+        $this->validator->rule('required', 'taskID');
+        $this->validate('请输入taskID');
+
+        $SuccessTask = D('Successtask');
+        $AchiveProgress = D('Achiveprogress');
+
+        $selectZan = $AchiveProgress->where("userID = %d",$data['userID'])->select();
+
+        $flag1 = false;
+        if($selectZan){
+            if($data['taskID'] == 0){
+                $flag1 = $AchiveProgress->where("userID = %d",$data['userID'])->setField(array(
+                    "accumulateSign" => $selectZan['accumulateSign'] + 1,
+                    "dayTaskNum" => $selectZan['dayTaskNum'] + 1
+                ));
+            }else{
+                $flag1 = $AchiveProgress->where("userID = %d",$data['userID'])->setInc('dayTaskNum');
+            }
+        }
+
+        $flag2 = $SuccessTask->where("userID = %d AND taskID = %d",array($data['userID'],$data['taskID']))->setField('getReward',1);
+
+        if($flag1 !== false && $flag2 !== false){
+            $this->apiSuccess(null,'领取奖励成功');
+        }else{
+            $this->apiError('领取奖励失败');
+        }
+
     }
 
     /**

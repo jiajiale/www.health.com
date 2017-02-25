@@ -26,6 +26,59 @@ class UserLogic extends BaseLogic{
     }
 
     /**
+     * 获取用户之间的点赞信息
+     * @param $conditions
+     * @return mixed
+     */
+    public function getUserLikeInfo($conditions){
+        return $this->userData->getUserLikeInfo($conditions);
+    }
+
+    /**
+     * 获取完整的用户资料
+     * @param $conditions
+     * @return array
+     */
+    public function checkUserInfo($conditions){
+        $UserInformation = D('Userinformation');
+        $Achiveprogress = D('Achiveprogress');
+        $Friends = D('Friends');
+
+        // 获取用户的基本信息
+        $userInfo = $UserInformation->field('userLV,userSign,userName,userHead,userAllMoney,userGlory,userZan,backImageView')
+                            ->where("userID = %d",$conditions['friendID'])->find();
+
+        // 获取用户的archive信息
+        $archiveUserInfo = $Achiveprogress->field('achivePoint,accumulateSign,accumulateFoot,appearanceNum')
+            ->where("userID = %d",$conditions['friendID'])->find();
+
+        if($archiveUserInfo){
+            $userInfo["userFoot"] = $archiveUserInfo["accumulateFoot"];
+            $userInfo["achivePoint"] = $archiveUserInfo["achivePoint"];
+            $userInfo["daySign"] = $archiveUserInfo["accumulateSign"];
+            $userInfo["allClothes"] = $archiveUserInfo["appearanceNum"];
+        }
+
+        // 获取用户的关注信息(是否关注)
+        $checkFans = $Friends->where("userID = %d AND friendID = %d",array($conditions['userID'],$conditions['friendID']))->find();
+        $checkAttention = $Friends->where("userID = %d AND friendID = %d",array($conditions['friendID'],$conditions['userID']))->find();
+
+        $isFans = count($checkFans) ? 1 : 0;
+        $isAttention = count($checkAttention) ? 1 : 0;
+
+        // 获取用户的关注信息(关注数量)
+        $fans = $Friends->where("userID = %d AND friendID = %d",array($conditions['userID'],$conditions['friendID']))->count();
+        $attentions = $Friends->where("userID = %d AND friendID = %d",array($conditions['friendID'],$conditions['userID']))->count();
+
+        return array(
+            "info" => $userInfo,
+            "fans" => $isFans,
+            "attention" => $attentions,
+            "number" => array("attention" => $attentions,"fans" => $fans)
+        );
+    }
+
+    /**
      * 完善用户信息
      * @param $data
      * @return bool

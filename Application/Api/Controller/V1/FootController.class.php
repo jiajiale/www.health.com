@@ -89,12 +89,12 @@ class FootController extends BaseController{
 
         if($day == 3){
             // 3个月的记录
-            for ($i = 0; $i < $day; $i++) {
+            for($i = 0; $i < $day; $i++){
                 $curTime = date('Y-m',strtotime("$startTime + $i month"));
                 $timeArray[$i] = $curTime;
             }
 
-            for ($i = 0; $i < $day; $i++) {
+            for($i = 0; $i < $day; $i++){
                 $search = $timeArray[$i];
                 $datetime = explode(" ",$search);
                 $date = explode("-",$datetime[0]);
@@ -107,12 +107,12 @@ class FootController extends BaseController{
                 $resultArray[$i] = $steps;
             }
         }else{
-            for ($i = 0; $i < $day; $i++) {
+            for($i = 0; $i < $day; $i++){
                 $curTime = date('Y-m-d',strtotime("$startTime + $i day"));
                 $timeArray[$i] = $curTime;
             }
 
-            for ($i = 0; $i < $day; $i++) {
+            for($i = 0; $i < $day; $i++){
                 // 统计步数
                 $steps = $FootInformation->where("time = '%s'",$timeArray[$i])->sum('foot');
                 $resultArray[$i] = $steps;

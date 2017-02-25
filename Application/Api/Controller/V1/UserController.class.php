@@ -324,4 +324,24 @@ class UserController extends BaseController{
             $this->apiError('用户不存在');
         }
     }
+
+    /**
+     * 查看用户资料
+     */
+    public function checkUserInfo(){
+        $this->validator->rule('required', 'userID');
+        $this->validate('请输入userID');
+        $this->validator->rule('required', 'friendID');
+        $this->validate('请输入friendID');
+
+        $data = $this->getAvailableData();
+
+        $result = $this->userLogic->checkUserInfo($data);
+
+        if($result){
+            $this->apiSuccess($result);
+        }else{
+            $this->apiError('未找到相关用户');
+        }
+    }
 }
