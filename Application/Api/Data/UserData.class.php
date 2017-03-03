@@ -34,7 +34,7 @@ class UserData extends BaseData{
         $data = $this->table('__USERINFORMATION__ AS user')
             ->field('user.userID,user.userName,user.userHead,user.userImage,user.userGlory,user.userLV,user.userEXP,
             user.userMoney,user.userDiamond,user.userSex,user.backImageView AS backImage,progress.achivePoint')
-            ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = user.userID')
+            ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = user.userID',"LEFT")
             ->where($where)
             ->find();
 
@@ -78,5 +78,82 @@ class UserData extends BaseData{
             ->find();
 
         return $data;
+    }
+
+    /**
+     * 获取用户好友之间的排行
+     * @param $conditions
+     * @return array
+     */
+    public function getFriendsRanking($conditions){
+        $meResult = $this->table('__USERINFORMATION__ AS user')
+            ->field('progress.dayFoot,progress.userLV,progress.achivePoint,progress.appearanceNum,
+            user.userName,user.userGlory,user.userHead,user.userImage,user.backImageView')
+            ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = user.userID')
+            ->where("user.userID = %d",$conditions['userID'])
+            ->find();
+
+        $achiveArray = $this->table('__USERINFORMATION__ AS user')
+            ->field('progress.achivePoint,user.userLV,user.userName,user.userGlory,user.userHead,user.userImage,user.backImageView')
+            ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = user.userID')
+            ->join('__FRIENDS__ as friends ON friends.userID = user.userID')
+            ->where("friends.userID = %d AND friends.userID != friends.friendID",$conditions['userID'])
+            ->order('progress.achivePoint DESC')
+            ->limit(20)
+            ->select();
+
+        $clothesArray = $this->table('__USERINFORMATION__ AS user')
+            ->field('progress.appearanceNum,user.userLV,user.userName,user.userGlory,user.userHead,user.userImage,user.backImageView')
+            ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = friends.friendID')
+            ->join('__FRIENDS__ as friends ON friends.friendID = user.userID')
+            ->where("friends.userID = %d AND friends.userID != friends.friendID",$conditions['userID'])
+            ->order('progress.appearanceNum DESC')
+            ->limit(20)
+            ->select();
+
+        $footArray = $this->table('__USERINFORMATION__ AS user')
+            ->field('progress.dayFoot,user.userLV,user.userName,user.userGlory,user.userHead,user.userImage,user.backImageView')
+            ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = friends.friendID')
+            ->join('__FRIENDS__ as friends ON friends.friendID = user.userID')
+            ->where("friends.userID = %d AND friends.userID != friends.friendID",$conditions['userID'])
+            ->order('progress.dayFoot DESC')
+            ->limit(20)
+            ->select();
+
+        return array("meResult"=>$meResult,"achiveArray"=>$achiveArray,"clothesArray"=>$clothesArray,"footArray"=>$footArray);
+    }
+
+    /**
+     * 获取用户在app中的排行
+     * @param $conditions
+     * @return mixed
+     */
+    public function getAppRanking($conditions){
+        $Footinformation = D('Footinformation');
+
+        $meResult["dayFoot"]= $Footinformation->where("userID = %d AND time = '%s'",array($conditions['userID'],$conditions['yesterDay']))->getField('foot');
+
+        $meResult = $this->table('__USERINFORMATION__ AS user')
+            ->field('progress.userLV,progress.achivePoint,progress.userFans,user.userName,user.userGlory,user.userHead,user.userImage,user.backImageView')
+            ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = user.userID')
+            ->where("user.userID = %d",$conditions['userID'])
+            ->find();
+
+        $achiveArray = $this->table('__ACHIVEPOINRANKING__ AS rank')
+            ->field('userName, userGlory, userLV, userHead, userImage, backImageView, achivePoinNum')
+            ->order('rank.achivePoinNum DESC')
+            ->select();
+
+        $clothesArray = $this->table('__CLOTHSRANKING__ AS rank')
+            ->field('userName, userGlory, userLV, userHead, backImageView, userImage, FansNum')
+            ->order('rank.FansNum DESC')
+            ->select();
+
+        $footArray = $this->table('__FOOLTRANKING__ AS rank')
+            ->field('userName, userGlory, userLV, userHead, userImage, backImageView, foolt')
+            ->order('rank.foolt DESC')
+            ->select();
+
+        return array("meResult"=>$meResult,"achiveArray"=>$achiveArray,"clothesArray"=>$clothesArray,"footArray"=>$footArray);
     }
 }

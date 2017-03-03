@@ -38,7 +38,7 @@ return array(
     'DB_MAIN' => array(
         'DB_TYPE' => 'mysqli', // 数据库类型
         'DB_HOST' => '116.62.49.243', // 服务器地址
-        'DB_NAME' => 'health', // 数据库名
+        'DB_NAME' => 'health_develop', // 数据库名
         'DB_USER' => 'root', // 用户名
         'DB_PWD' => 'root', // 密码Rm97rdZGJz/w
         'DB_PORT' => '3306', // 端口

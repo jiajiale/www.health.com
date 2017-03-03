@@ -44,6 +44,24 @@ class UserLogic extends BaseLogic{
     }
 
     /**
+     * 获取用户好友之间的排行
+     * @param $conditions
+     * @return mixed
+     */
+    public function getFriendsRanking($conditions){
+        return $this->userData->getFriendsRanking($conditions);
+    }
+
+    /**
+     * 获取用户在app中的排行
+     * @param $conditions
+     * @return mixed
+     */
+    public function getAppRanking($conditions){
+        return $this->userData->getAppRanking($conditions);
+    }
+
+    /**
      * 获取完整的用户资料
      * @param $conditions
      * @return array

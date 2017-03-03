@@ -402,5 +402,29 @@ class UserController extends BaseController{
         $this->validate('请输入userMoney');
 
         $data = $this->getAvailableData();
+
+        $result = array();
+        switch($data['condition']){
+            case 199:
+                // 好友排行榜
+                $result = $this->userLogic->getFriendsRanking($data);
+                break;
+            case 299:
+                // 步哟排行榜
+                $data['yesterDay'] = date('Y-m-d',strtotime("-1 day"));
+                $result = $this->userLogic->getAppRanking($data);
+                break;
+            default:
+        }
+
+        if(isset($result['meResult']) && count($result['meResult'])){
+            if($result['achiveArray']){
+                $this->apiSuccess(array("Me"=>$result['meResult'],"achivePoint"=>$result['achiveArray'],"clothesAll"=>$result['clothesArray'],"dayFoot"=>$result['footArray']));
+            }else{
+                $this->apiSuccess(array("Me"=>$result['meResult']));
+            }
+        }else{
+            $this->apiError('没有找到信息');
+        }
     }
 }
