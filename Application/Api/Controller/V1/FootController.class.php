@@ -5,6 +5,15 @@ use Api\Controller\BaseController;
 class FootController extends BaseController{
 
     /**
+     * @var \Api\Logic\FootLogic
+     */
+    protected $footLogic;
+
+    public function _initialize(){
+        $this->footLogic = D('Foot', 'Logic');
+    }
+
+    /**
      * 步数相关接口
      */
     public function step(){
@@ -54,7 +63,20 @@ class FootController extends BaseController{
      * @param $data
      */
     public function uploadStep($data){
+        $this->validator->rule('required', 'userID');
+        $this->validate('请输入用户ID');
+        $this->validator->rule('required', 'date');
+        $this->validate('请输入日期数组');
+        $this->validator->rule('required', 'foot');
+        $this->validate('请输入步数数组');
 
+        $result = $this->footLogic->uploadStep($data);
+
+        if($result !== false){
+            $this->apiSuccess($result,'上传步数成功');
+        }else{
+            $this->apiError('上传步数失败');
+        }
     }
 
     /**
