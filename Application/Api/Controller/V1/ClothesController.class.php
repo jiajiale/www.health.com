@@ -44,4 +44,41 @@ class ClothesController extends BaseController{
             $this->apiError("未找到任何信息");
         }
     }
+
+    /**
+     * 商城接口
+     */
+    public function getUserClothes(){
+        $this->validator->rule('required', 'userID');
+        $this->validate('请输入userID');
+        $this->validator->rule('required', 'Gender');
+        $this->validate('请输入Gender');
+
+        $data = $this->getAvailableData();
+        $kindArray = array("0","1","3","5","6");
+
+        $ClothesInformation = D('Clothesinformation');
+        $UserClothes = D('Userclothes');
+
+        $field = "clothesID,clothesName,clothesNormal,clothesMarket,clothesImportant,clothesDescripe,clothesMoney,clothesDiamond,achivePoint,clothesParts";
+
+        $arrayOne = array();
+        for($i=0; $i < count($kindArray); $i++) {
+            if($i == 2){
+                $map['clothesGender'] = $data['Gender'];
+                $map['clothesParts'] = array('between',array('2','4'));
+                $arrayTwo = $ClothesInformation->field($field)->where($map)->select();
+            }else{
+                $map['clothesGender'] = $data['Gender'];
+                $map['clothesParts'] = $kindArray[$i];
+                $arrayTwo = $ClothesInformation->field($field)->where($map)->select();
+            }
+
+            $arrayOne[$i] = $arrayTwo;
+        }
+
+        $arrayThree = $UserClothes->field('clothesID')->where("userID = %d",$data['userID'])->select();
+
+        $this->apiSuccess(array("info" => $arrayOne,"Me" => $arrayThree));
+    }
 }
