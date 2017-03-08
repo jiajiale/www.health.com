@@ -70,7 +70,7 @@ class BaseController
 
         $request = $this->validator->data();
         foreach ($request as $key => $value) {
-            if ($value != '') {
+            if ($value !== '') {
                 $data[$key] = $value;
             }
         }
@@ -158,7 +158,7 @@ class BaseController
     }
 
     //成功返回
-    public function apiSuccess($data = null, $class = 'obj' ,$msg = '')
+    public function apiSuccess($data = null, $msg = '',$class = 'obj' )
     {
         if (!$msg) {
             $msg = "success";

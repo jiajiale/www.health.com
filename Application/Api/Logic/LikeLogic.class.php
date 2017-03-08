@@ -22,9 +22,9 @@ class LikeLogic extends BaseLogic{
     public function saveUserLike($data){
         $UserZan = D('Userzan');
         $UserInformation = D('Userinformation');
-        $ArchiveProgress = D('Archiveprogress');
+        $ArchiveProgress = D('Achiveprogress');
 
-        $UserZan->startTrans();
+        $UserZan->startTrans(); // 开启事务
 
         $flag1 = $UserZan->add(array(
             'userID' => $data['userID'],
@@ -37,8 +37,10 @@ class LikeLogic extends BaseLogic{
         $flag3 = $ArchiveProgress->where("userID = '%s'",$data['userID'])->setInc('dayZan');
 
         if($flag1 && $flag2 !== false && $flag3 !== false){
+            $UserZan->commit();  // 事务提交
             return true;
         }else{
+            $UserZan->commit();  // 事务回滚
             return false;
         }
     }

@@ -27,7 +27,7 @@ class FootLogic extends BaseLogic{
 
         $FootInformation = D('Footinformation');
         $UserInformation = D('Userinformation');
-        $AchiveProgress = D('chiveprogress');
+        $AchiveProgress = D('Achiveprogress');
 
         $FootInformation->startTrans(); // 开启事务
 
@@ -47,7 +47,14 @@ class FootLogic extends BaseLogic{
                 $result1 = $FootInformation->where("time = '%s' AND userID = %d",array($dateArr[$i],$data['userID']))->setField('foot',$footArr[$i]);
             }else{
                 // 当前日期不存在
-                $result1 = $FootInformation->add(array('userID' => $data['userID'],'foot' => $footArr[$i],$arr[0],$arr[1],$arr[2],$dateArr[$i]));
+                $result1 = $FootInformation->add(array(
+                    'userID' => $data['userID'],
+                    'foot' => $footArr[$i],
+                    'year' => $arr[0],
+                    'month' => $arr[1],
+                    'day' => $arr[2],
+                    'time' => $dateArr[$i]
+                ));
             }
 
             // 计算总步数

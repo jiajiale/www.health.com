@@ -135,7 +135,7 @@ class UserController extends BaseController{
                     $this->registerUserInfo($data);
                     break;
                 default:
-                    $this->loginValidate($data);
+                    $this->checkUserId($data);
             }
         }else{
             $this->apiError('请求参数不正确',401);
@@ -191,15 +191,25 @@ class UserController extends BaseController{
 
         // 转一下大小写
         $data['UUID'] = $data['uuid'];
+        $data['userImageSet'] = $data['imageSet'];
         $data['registerTime'] = get_date();
         $data['lastTime'] = get_date();
-        $result = $this->userLogic->saveUserInfo($data);
+        $UserInformation = D('Userinformation');
 
-        if($result){
-            $this->apiSuccess(null,'完善用户信息成功');
+        $user = $UserInformation->where("userID = '%s'",$data['userID'])->find();
+
+        if(!$user){
+            $result = $this->userLogic->saveUserInfo($data);
+
+            if($result){
+                $this->apiSuccess(null,'完善用户信息成功');
+            }else{
+                $this->apiError('完善用户信息失败');
+            }
         }else{
-            $this->apiError('完善用户信息失败');
+            $this->apiError('该用户已存在');
         }
+
     }
 
     /**
@@ -276,17 +286,17 @@ class UserController extends BaseController{
 
             $flag1 = $UserInformation->where("userID = '%s'",$data['userID'])->save(array(
                 'userLV' => $data['userLV'],
-                'userEXP' => $data['userEXP']
+                'userExp' => $data['userEXP']
             ));
 
             $flag2 = $Achiveprogress->where("userID = '%s'",$data['userID'])->setField('userLV',$data['userLV']);
 
             if($flag1 !== false && $flag2 !== false){
                 $UserInformation->commit(); // 事务提交
-                $this->apiSuccess(null,'更换用户称号成功');
+                $this->apiSuccess(null,'用户升级成功');
             }else{
                 $UserInformation->rollback();   // 事务回滚
-                $this->apiError('更换用户称号失败');
+                $this->apiError('用户升级失败');
             }
         }else{
             $this->apiError('用户不存在');
@@ -316,9 +326,9 @@ class UserController extends BaseController{
             ));
 
             if($result !== false){
-                $this->apiSuccess(null,'更换用户称号成功');
+                $this->apiSuccess(null,'修改用户资料成功');
             }else{
-                $this->apiError('更换用户称号失败');
+                $this->apiError('修改用户资料失败');
             }
         }else{
             $this->apiError('用户不存在');
@@ -382,7 +392,7 @@ class UserController extends BaseController{
 
             if($flag1 !== false && $flag2 !== false && $flag3 !== false){
                 $Achiveprogress->commit();  // 提交事务
-                $this->apiSuccess('更新成就进度成功');
+                $this->apiSuccess(null,'更新成就进度成功');
             }else{
                 $Achiveprogress->rollback();    // 事务回滚
                 $this->apiError('更新成就进度失败');

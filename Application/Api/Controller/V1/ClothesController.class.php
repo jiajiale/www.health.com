@@ -10,14 +10,6 @@ class ClothesController extends BaseController{
     public function getClothesSet(){
         $this->validator->rule('required', 'userID');
         $this->validate('请输入userID');
-        $this->validator->rule('required', 'userMoney');
-        $this->validate('请输入userMoney');
-        $this->validator->rule('required', 'userDiamond');
-        $this->validate('请输入userDiamond');
-        $this->validator->rule('required', 'userEXP');
-        $this->validate('请输入userEXP');
-        $this->validator->rule('required', 'achivePoint');
-        $this->validate('请输入achivePoint');
 
         $data = $this->getAvailableData();
 
@@ -27,22 +19,32 @@ class ClothesController extends BaseController{
 
         $imageSet = $UserInformation->field("userImageSet")->where("userID = %d",$data['userID'])->find();
 
-        $resultArray = array();
-        for($i=0; $i < 7; $i++){
-            $clothesID = $UserClothes->field("clothesID")->where("userID = %d AND clothesParts = %d",array($data['userID'],$i));
+        if(count($imageSet)){
+            $resultArray = array();
+            for($i=0; $i < 7; $i++){
+                $clothesID = $UserClothes->where("userID = %d AND clothesParts = %d",array($data['userID'],$i))->getField("clothesID",true);
 
-            $result = $ClothesInformation->field("clothesName,clothesMarket,clothesAfter,clothesBefore,clothesCenter,clothesImportant,clothesPosition")
-                    ->where(array("IN",$clothesID))->select();
+                if(count($clothesID)){
+                    $map['clothesID'] = array("IN",$clothesID);
+                    $result = $ClothesInformation->field("clothesName,clothesMarket,clothesAfter,clothesBefore,clothesCenter,clothesImportant,clothesPosition")
+                        ->where($map)->select();
+                }else{
+                    $result = array();
+                }
 
-            $resultArray[$i] = $result;
+                $resultArray[$i] = $result;
 
-        }
+            }
 
-        if(count($resultArray)){
-            $this->apiSuccess(array("infor" => $resultArray,"imageSet" => $imageSet));
+            if(count($resultArray)){
+                $this->apiSuccess(array("infor" => $resultArray,"imageSet" => $imageSet));
+            }else{
+                $this->apiError("未找到任何信息");
+            }
         }else{
-            $this->apiError("未找到任何信息");
+            $this->apiError("用户信息不存在");
         }
+
     }
 
     /**

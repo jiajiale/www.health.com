@@ -148,9 +148,9 @@ class ArchiveController extends BaseController{
         $result = $this->archiveProgressLogic->saveSuccessArchive($data);
 
         if($result){
-            $this->apiSuccess(null,'领取奖励失败');
+            $this->apiSuccess(null,'领取奖励成功');
         }else{
-            $this->apiError('领取奖励成功');
+            $this->apiError('领取奖励失败');
         }
     }
 
@@ -184,9 +184,9 @@ class ArchiveController extends BaseController{
         $flag2 = $SuccessTask->where("userID = %d AND taskID = %d",array($data['userID'],$data['taskID']))->setField('getReward',1);
 
         if($flag1 !== false && $flag2 !== false){
-            $this->apiSuccess(null,'领取奖励成功');
+            $this->apiSuccess(null,'领取签到奖励成功');
         }else{
-            $this->apiError('领取奖励失败');
+            $this->apiError('领取签到奖励失败');
         }
 
     }
@@ -201,7 +201,7 @@ class ArchiveController extends BaseController{
 
         $SuccessTask = D('Successtask');
 
-        $successTask = $SuccessTask->where("userID = '%s'")->select();
+        $successTask = $SuccessTask->where("userID = '%s'",$data['userID'])->select();
 
         if($successTask){
             $result = array();

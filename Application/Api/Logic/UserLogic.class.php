@@ -124,7 +124,7 @@ class UserLogic extends BaseLogic{
             // 1、插入用户信息表userinformation
             $flag1 = $UserInformation->add($data);
 
-            // 2、插入用户衣服信息表serclothes
+            // 2、插入用户衣服信息表userclothes
             if($data['userSex'] == 0){
                 $clothes = array(
                     array('userID' => $data['userID'],'clothesID' => $data['clothesID'],'clothesParts' => 0),
@@ -138,7 +138,7 @@ class UserLogic extends BaseLogic{
                 $clothes = array(
                     array('userID' => $data['userID'],'clothesID' => $data['clothesID'],'clothesParts' => 0),
                     array('userID' => $data['userID'],'clothesID' => 59,'clothesParts' => 1),
-                    array('userID' => $data['userID'],'clothesID' => 64,'clothesParts' => 5),
+                    array('userID' => $data['userID'],'clothesID' => 61,'clothesParts' => 5),
                     array('userID' => $data['userID'],'clothesID' => 63,'clothesParts' => 6),
                 );
 

@@ -31,6 +31,11 @@ class LikeController extends BaseController{
                     $this->doLike($data);
                     break;
                 case 3:
+                    // 谁赞过我
+                    $this->getLike($data);
+                    break;
+                case 4:
+                    // 我赞过谁
                     $this->getLike($data);
                     break;
                 default:
@@ -49,7 +54,7 @@ class LikeController extends BaseController{
         $this->validator->rule('required', 'userID');
         $this->validate('请输入用户名');
         $this->validator->rule('required', 'friendID');
-        $this->validate('请输入密码');
+        $this->validate('请输入friendID');
 
         $Friends = D('Friends');
 
@@ -77,7 +82,7 @@ class LikeController extends BaseController{
         $result = $this->likeLogic->saveUserLike($data);
 
         if($result){
-            $this->apiSuccess(null);
+            $this->apiSuccess(null,'点赞成功');
         }else{
             $this->apiError('点赞失败');
         }
@@ -98,7 +103,7 @@ class LikeController extends BaseController{
 
         if($userLikeInfo){
             foreach($userLikeInfo as $key => $val){
-                $userLikeInfo[$key]['fansNum'] = $Friends->where("friendID = %d",$data['userId'])->count();
+                $userLikeInfo[$key]['fansNum'] = $Friends->where("friendID = %d",$data['userID'])->count();
             }
 
             $this->apiSuccess(array("info" => $userLikeInfo,"time" => date("Y-m-d")));

@@ -126,7 +126,7 @@ class FootController extends BaseController{
                 // 统计步数
                 $steps = $FootInformation->where("userID = '%s' AND year = %d AND month = %d",array($data['userID'],$year,$month))->sum('foot');
 
-                $resultArray[$i] = $steps;
+                $resultArray[$i] = is_null($steps) ? 0 : $steps;
             }
         }else{
             for($i = 0; $i < $day; $i++){
@@ -137,7 +137,7 @@ class FootController extends BaseController{
             for($i = 0; $i < $day; $i++){
                 // 统计步数
                 $steps = $FootInformation->where("time = '%s'",$timeArray[$i])->sum('foot');
-                $resultArray[$i] = $steps;
+                $resultArray[$i] = is_null($steps) ? 0 : $steps;
             }
         }
 

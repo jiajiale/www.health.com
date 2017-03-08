@@ -53,8 +53,8 @@ class ArchiveProgressData extends BaseData{
         $where = $this->getCondition($conditions);
 
         $data = $this->table('__ACHIVEPROGRESS__ as progress')
-            ->field('progress.dayFoot,dataTask.dayRelease,dataTask.daycomment')
-            ->join('__DAYTASK__ as dataTask ON dataTask.userID = progress.userID')
+            ->field('progress.dayFoot,dayTask.dayRelease,dayTask.daycomment')
+            ->join('__DAYTASK__ as dayTask ON dayTask.userID = progress.userID')
             ->where($where)
             ->find();
 
@@ -70,8 +70,8 @@ class ArchiveProgressData extends BaseData{
         $where = $this->getCondition($conditions);
 
         $data = $this->table('__ACHIVEPROGRESS__ as progress')
-            ->field('progress.*,dataTask.dayRelease,dataTask.daycomment')
-            ->join('__DAYTASK__ as dataTask ON dataTask.userID = progress.userID')
+            ->field('progress.*,dayTask.dayRelease,dayTask.daycomment')
+            ->join('__DAYTASK__ as dayTask ON dayTask.userID = progress.userID')
             ->where($where)
             ->find();
 

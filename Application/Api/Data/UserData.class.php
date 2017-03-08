@@ -49,8 +49,11 @@ class UserData extends BaseData{
     public function getUserLikeInfo($conditions){
         $where = array();
 
-        if (isset($conditions['userID']) && !empty($conditions['userID'])) {
+        if (isset($conditions['userID']) && !empty($conditions['userID']) && $conditions['condition'] == 3){
             $where['userzan.friendID'] = array('EQ', $conditions['userID']);
+        }
+        if (isset($conditions['userID']) && !empty($conditions['userID']) && $conditions['condition'] == 4){
+            $where['userzan.userID'] = array('EQ', $conditions['userID']);
         }
 
         $data = $this->table('__USERINFORMATION__ AS user')
@@ -72,7 +75,7 @@ class UserData extends BaseData{
         $where = $this->getCondition($conditions);
 
         $data = $this->table('__USERINFORMATION__ AS user')
-            ->field('a.userMoney, a.userAllMoney, a.userDiamond, a.userExp,b.achivePoint')
+            ->field('user.userMoney, user.userAllMoney, user.userDiamond, user.userExp,progress.achivePoint')
             ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = user.userID')
             ->where($where)
             ->find();
@@ -102,19 +105,19 @@ class UserData extends BaseData{
             ->limit(20)
             ->select();
 
-        $clothesArray = $this->table('__USERINFORMATION__ AS user')
+        $clothesArray = $this->table('__FRIENDS__ as friends')
             ->field('progress.appearanceNum,user.userLV,user.userName,user.userGlory,user.userHead,user.userImage,user.backImageView')
             ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = friends.friendID')
-            ->join('__FRIENDS__ as friends ON friends.friendID = user.userID')
+            ->join('__USERINFORMATION__ AS user ON friends.friendID = user.userID')
             ->where("friends.userID = %d AND friends.userID != friends.friendID",$conditions['userID'])
             ->order('progress.appearanceNum DESC')
             ->limit(20)
             ->select();
 
-        $footArray = $this->table('__USERINFORMATION__ AS user')
+        $footArray = $this->table('__FRIENDS__ as friends')
             ->field('progress.dayFoot,user.userLV,user.userName,user.userGlory,user.userHead,user.userImage,user.backImageView')
             ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = friends.friendID')
-            ->join('__FRIENDS__ as friends ON friends.friendID = user.userID')
+            ->join('__USERINFORMATION__ AS user ON friends.friendID = user.userID')
             ->where("friends.userID = %d AND friends.userID != friends.friendID",$conditions['userID'])
             ->order('progress.dayFoot DESC')
             ->limit(20)
