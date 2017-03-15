@@ -32,6 +32,13 @@ class UserController extends BaseController{
                 case 2:
                     $this->checkPhone($data);
                     break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    $this->checkDevice();
+                    break;
                 default:
                     $this->loginValidate($data);
             }
@@ -46,7 +53,7 @@ class UserController extends BaseController{
      */
     public function loginValidate($data){
         $this->validator->rule('required', 'userID');
-        $this->validate('请输入用户名');
+        $this->validate('请输入用户userID');
         $this->validator->rule('required', 'userPassword');
         $this->validate('请输入密码');
         $this->validator->rule('required', 'uuid');
@@ -119,6 +126,26 @@ class UserController extends BaseController{
         }
     }
 
+    /**
+     * 检测登陆设备
+     * @param $data
+     */
+    public function checkDevice($data){
+        $this->validator->rule('required', 'userID');
+        $this->validate('请输入用户userID');
+        $this->validator->rule('required', 'uuid');
+        $this->validate('请输入设备id号');
+
+        $UserInformation = D('Userinformation');
+
+        $user = $UserInformation->where("userID = %d AND UUID = '%s'",array($data['userID'],$data['uuid']))->find();
+
+        if($user){
+            $this->apiSuccess(null,'登陆设备存在');
+        }else{
+            $this->apiError('登陆设备不存在');
+        }
+    }
 
     /**
      * 用户注册接口
