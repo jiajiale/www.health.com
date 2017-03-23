@@ -16,7 +16,8 @@ class UserData extends BaseData{
         $where = array();
 
         if (isset($conditions['userID']) && !empty($conditions['userID'])) {
-            $where['user.userID'] = array('EQ', $conditions['userID']);
+            //$where['user.userID'] = array('EQ', $conditions['userID']);
+            $where['_string'] = '(user.userID = '. $conditions['userID'] .' OR user.userPhone = '. $conditions['userID'] .')';
         }
 
         return $where;
@@ -32,7 +33,7 @@ class UserData extends BaseData{
         $where = $this->getCondition($conditions);
 
         $data = $this->table('__USERINFORMATION__ AS user')
-            ->field('user.userID,user.userName,user.userHead,user.userImage,user.userGlory,user.userLV,user.userEXP,
+            ->field('user.userID,user.userName,user.userHead,user.userImage,user.userImageSet,user.userGlory,user.userLV,user.userEXP,
             user.userMoney,user.userDiamond,user.userSex,user.backImageView AS backImage,progress.achivePoint')
             ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = user.userID',"LEFT")
             ->where($where)
@@ -91,22 +92,22 @@ class UserData extends BaseData{
     public function getFriendsRanking($conditions){
         $meResult = $this->table('__USERINFORMATION__ AS user')
             ->field('progress.dayFoot,progress.userLV,progress.achivePoint,progress.appearanceNum,
-            user.userName,user.userGlory,user.userHead,user.userImage,user.backImageView')
+            user.userName,user.userGlory,user.userHead,user.userImage,user.userImageSet,user.backImageView')
             ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = user.userID')
             ->where("user.userID = %d",$conditions['userID'])
             ->find();
 
-        $achiveArray = $this->table('__USERINFORMATION__ AS user')
-            ->field('progress.achivePoint,user.userLV,user.userName,user.userGlory,user.userHead,user.userImage,user.backImageView')
-            ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = user.userID')
-            ->join('__FRIENDS__ as friends ON friends.userID = user.userID')
+        $achiveArray = $this->table('__FRIENDS__ as friends')
+            ->field('progress.achivePoint,user.userLV,user.userName,user.userGlory,user.userHead,user.userImage,user.userImageSet,user.backImageView')
+            ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = friends.friendID')
+            ->join('__USERINFORMATION__ AS user ON friends.friendID = user.userID')
             ->where("friends.userID = %d AND friends.userID != friends.friendID",$conditions['userID'])
             ->order('progress.achivePoint DESC')
             ->limit(20)
             ->select();
 
         $clothesArray = $this->table('__FRIENDS__ as friends')
-            ->field('progress.appearanceNum,user.userLV,user.userName,user.userGlory,user.userHead,user.userImage,user.backImageView')
+            ->field('progress.appearanceNum,user.userLV,user.userName,user.userGlory,user.userHead,user.userImage,user.userImageSet,user.backImageView')
             ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = friends.friendID')
             ->join('__USERINFORMATION__ AS user ON friends.friendID = user.userID')
             ->where("friends.userID = %d AND friends.userID != friends.friendID",$conditions['userID'])
@@ -115,7 +116,7 @@ class UserData extends BaseData{
             ->select();
 
         $footArray = $this->table('__FRIENDS__ as friends')
-            ->field('progress.dayFoot,user.userLV,user.userName,user.userGlory,user.userHead,user.userImage,user.backImageView')
+            ->field('progress.dayFoot,user.userLV,user.userName,user.userGlory,user.userHead,user.userImage,user.userImageSet,user.backImageView')
             ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = friends.friendID')
             ->join('__USERINFORMATION__ AS user ON friends.friendID = user.userID')
             ->where("friends.userID = %d AND friends.userID != friends.friendID",$conditions['userID'])
@@ -137,7 +138,7 @@ class UserData extends BaseData{
         $meResult["dayFoot"]= $Footinformation->where("userID = %d AND time = '%s'",array($conditions['userID'],$conditions['yesterDay']))->getField('foot');
 
         $meResult = $this->table('__USERINFORMATION__ AS user')
-            ->field('progress.userLV,progress.achivePoint,progress.userFans,user.userName,user.userGlory,user.userHead,user.userImage,user.backImageView')
+            ->field('progress.userLV,progress.achivePoint,progress.userFans,user.userName,user.userGlory,user.userHead,user.userImage,user.userImageSet,user.backImageView')
             ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = user.userID')
             ->where("user.userID = %d",$conditions['userID'])
             ->find();

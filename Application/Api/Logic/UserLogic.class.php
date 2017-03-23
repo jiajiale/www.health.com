@@ -97,6 +97,9 @@ class UserLogic extends BaseLogic{
         $fans = $Friends->where("userID = %d AND friendID = %d",array($conditions['userID'],$conditions['friendID']))->count();
         $attentions = $Friends->where("userID = %d AND friendID = %d",array($conditions['friendID'],$conditions['userID']))->count();
 
+        $userInfo['attention'] = $attentions;
+        $userInfo['fans'] = $fans;
+
         return array(
             "info" => $userInfo,
             "fans" => $isFans,

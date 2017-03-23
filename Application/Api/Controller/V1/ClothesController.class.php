@@ -17,7 +17,7 @@ class ClothesController extends BaseController{
         $ClothesInformation = D('Clothesinformation');
         $UserClothes = D('Userclothes');
 
-        $imageSet = $UserInformation->field("userImageSet")->where("userID = %d",$data['userID'])->find();
+        $imageSet = $UserInformation->where("userID = %d",$data['userID'])->getField('userImageSet');
 
         if(count($imageSet)){
             $resultArray = array();
@@ -79,7 +79,7 @@ class ClothesController extends BaseController{
             $arrayOne[$i] = $arrayTwo;
         }
 
-        $arrayThree = $UserClothes->field('clothesID')->where("userID = %d",$data['userID'])->select();
+        $arrayThree = $UserClothes->where("userID = %d",$data['userID'])->getField('clothesID',true);
 
         $this->apiSuccess(array("info" => $arrayOne,"Me" => $arrayThree));
     }

@@ -37,7 +37,7 @@ class UserController extends BaseController{
                 case 4:
                     break;
                 case 5:
-                    $this->checkDevice();
+                    $this->checkDevice($data);
                     break;
                 default:
                     $this->loginValidate($data);
@@ -68,13 +68,13 @@ class UserController extends BaseController{
             $UserForbidden = D('Userforbidden');
 
             // 验证用户是否被禁用
-            $userForbidden = $UserForbidden->where("userID = '%s'",$data['userID'])->find();
+            $userForbidden = $UserForbidden->where("userID = '%s'",$user['userID'])->find();
 
             if(!$userForbidden || $userForbidden['isOK'] == 0){
                 // 验证用户密码是否正确
                 if($user['userPassword'] == $data['userPassword']){
                     // 更新用户的设备信息
-                    $result = $UserInformation->where("userId = '%s'",$data['userID'])->setField('UUID',$data['uuid']);
+                    $result = $UserInformation->where("userId = '%s'",$user['userID'])->setField('UUID',$data['uuid']);
 
                     if($result !== false){
                         // 获取用户的信息
@@ -100,7 +100,7 @@ class UserController extends BaseController{
                     $this->apiError('用户密码不正确');
                 }
             }else{
-                $this->apiError('该用户已经被禁用');
+                $this->apiReturn($userForbidden,'obj','该用户已经被禁用',300);
             }
         }else{
             $this->apiError('用户不存在');
@@ -153,7 +153,7 @@ class UserController extends BaseController{
     public function register(){
         $data = $this->getAvailableData();
 
-        if(isset($data['condition']) && !empty($data['condition'])){
+        if(isset($data['condition'])){
             switch($data['condition']){
                 case 0:
                     $this->checkUserId($data);
