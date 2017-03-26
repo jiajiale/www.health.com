@@ -6,6 +6,7 @@ use Api\Enum\BoolEnum;
 use Org\Util\Validator;
 use Redis;
 use Think\Hook;
+use Think\Log;
 
 /**
  * 基础API控制器
@@ -32,6 +33,8 @@ class BaseController
         $this->request = preg_replace_callback('/\\n\s+/',function(){
             return '';
         },removeBOM(@file_get_contents('php://input')));
+	
+        Log::write('[请求参数]:'.$this->request);
 
         $this->request = json_clean_decode($this->request,true);
 

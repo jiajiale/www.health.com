@@ -62,6 +62,15 @@ class UserLogic extends BaseLogic{
     }
 
     /**
+     * 获取用户的粉丝关注信息
+     * @param $conditions
+     * @return mixed
+     */
+    public function getUserFans($conditions){
+        return $this->userData->getUserFans($conditions);
+    }
+
+    /**
      * 获取完整的用户资料
      * @param $conditions
      * @return array
@@ -96,6 +105,9 @@ class UserLogic extends BaseLogic{
         // 获取用户的关注信息(关注数量)
         $fans = $Friends->where("userID = %d AND friendID = %d",array($conditions['userID'],$conditions['friendID']))->count();
         $attentions = $Friends->where("userID = %d AND friendID = %d",array($conditions['friendID'],$conditions['userID']))->count();
+
+        $userInfo['attention'] = $attentions;
+        $userInfo['fans'] = $fans;
 
         return array(
             "info" => $userInfo,

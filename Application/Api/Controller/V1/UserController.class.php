@@ -32,6 +32,13 @@ class UserController extends BaseController{
                 case 2:
                     $this->checkPhone($data);
                     break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    $this->checkDevice($data);
+                    break;
                 default:
                     $this->loginValidate($data);
             }
@@ -46,7 +53,7 @@ class UserController extends BaseController{
      */
     public function loginValidate($data){
         $this->validator->rule('required', 'userID');
-        $this->validate('请输入用户名');
+        $this->validate('请输入用户userID');
         $this->validator->rule('required', 'userPassword');
         $this->validate('请输入密码');
         $this->validator->rule('required', 'uuid');
@@ -61,13 +68,13 @@ class UserController extends BaseController{
             $UserForbidden = D('Userforbidden');
 
             // 验证用户是否被禁用
-            $userForbidden = $UserForbidden->where("userID = '%s'",$data['userID'])->find();
+            $userForbidden = $UserForbidden->where("userID = '%s'",$user['userID'])->find();
 
             if(!$userForbidden || $userForbidden['isOK'] == 0){
                 // 验证用户密码是否正确
                 if($user['userPassword'] == $data['userPassword']){
                     // 更新用户的设备信息
-                    $result = $UserInformation->where("userId = '%s'",$data['userID'])->setField('UUID',$data['uuid']);
+                    $result = $UserInformation->where("userId = '%s'",$user['userID'])->setField('UUID',$data['uuid']);
 
                     if($result !== false){
                         // 获取用户的信息
@@ -93,7 +100,7 @@ class UserController extends BaseController{
                     $this->apiError('用户密码不正确');
                 }
             }else{
-                $this->apiError('该用户已经被禁用');
+                $this->apiReturn($userForbidden,'obj','该用户已经被禁用',300);
             }
         }else{
             $this->apiError('用户不存在');
@@ -119,6 +126,26 @@ class UserController extends BaseController{
         }
     }
 
+    /**
+     * 检测登陆设备
+     * @param $data
+     */
+    public function checkDevice($data){
+        $this->validator->rule('required', 'userID');
+        $this->validate('请输入用户userID');
+        $this->validator->rule('required', 'uuid');
+        $this->validate('请输入设备id号');
+
+        $UserInformation = D('Userinformation');
+
+        $user = $UserInformation->where("userID = %d AND UUID = '%s'",array($data['userID'],$data['uuid']))->find();
+
+        if($user){
+            $this->apiSuccess(null,'登陆设备存在');
+        }else{
+            $this->apiError('登陆设备不存在');
+        }
+    }
 
     /**
      * 用户注册接口
@@ -126,7 +153,7 @@ class UserController extends BaseController{
     public function register(){
         $data = $this->getAvailableData();
 
-        if(isset($data['condition']) && !empty($data['condition'])){
+        if(isset($data['condition'])){
             switch($data['condition']){
                 case 0:
                     $this->checkUserId($data);

@@ -39,7 +39,7 @@ class CommonController extends BaseController{
                     break;
                 case 2:
                     // 换装图片上传
-                    $data['folder'] = 'Clothes';
+                    $data['folder'] = 'image';
                     $this->uploadClothes($data);
                     break;
                 default:
@@ -63,6 +63,11 @@ class CommonController extends BaseController{
 
         $UserInformation = D('Userinformation');
 
+        if($data['saveKind'] == 1){
+            $data['images'] = $data['userImage'];
+        }else{
+            $data['images'] = $data['userHead'];
+        }
         // 保存图片
         $this->saveImages($data);
 
@@ -100,8 +105,8 @@ class CommonController extends BaseController{
      * @param $data
      */
     public function saveImages(&$data){
-        $this->validator->rule('required', 'images');
-        $this->validate('请上传图片');
+        //$this->validator->rule('required', 'images');
+        //$this->validate('请上传图片');
 
         $base64Data = $data['images'];
 
@@ -109,11 +114,16 @@ class CommonController extends BaseController{
             'maxSize' => 1048576, //图片最大为1M
             'exts' => array('jpg', 'gif', 'png', 'jpeg'),
             'rootPath' => './Public/',
-            'savePath' => 'Uploads/Api/' . $data['folder'] . '/',
+            'savePath' => 'Api/' . $data['folder'] . '/',
             'hash' => false,
-            'subName' => date('Ymd',time()),
-            'saveName' => date('YmdHis')
+            'subName' => ''
         );
+
+        if($data['saveKind'] == 1){
+            $config['saveName'] = $data['userID'] . 'Infor';
+        }else{
+            $config['saveName'] = $data['userID'] . 'Head';
+        }
 
         $path = $config['rootPath'] . $config['savePath'] . $config['subName'];
 
@@ -122,10 +132,10 @@ class CommonController extends BaseController{
         }
 
         try {
-            $data = explode(',', $base64Data);
-            $content = str_replace(' ', '+', $data[1]);
+            $imageArr = explode(',', $base64Data);
+            $content = str_replace(' ', '+', $imageArr[1]);
 
-            $a = explode(';', $data[0]);
+            $a = explode(';', $imageArr[0]);
             $b = explode('/', $a[0]);
             $ext = $b[1]; //获取后缀
             $filename = $path . '/' . $config['saveName'] . '.' . $ext;
@@ -147,7 +157,7 @@ class CommonController extends BaseController{
                 $this->apiError('上传文件太大',409);
             }
 
-            $data['filename'] = $config['subName'] . '/' . $config['saveName'] . '.' . $ext;
+            $data['filename'] = $config['saveName'] . '.' . $ext;
 
         } catch (Exception $e) {
             $this->apiError('上传失败',409);
