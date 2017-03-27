@@ -57,5 +57,11 @@ return array(
         'REPLY_NAME'  => '', //回复名称（留空则为发件人名称）
     ),
 
+    //信鸽推送配置
+    'XINGE' => array(
+        'ACCESSID' => '2200252500',
+        'SECRETKEY' => '8154cb02e43dce0dc9052facbe19aa96'
+    ),
+
     'ERROR_PAGE' =>'/Home/Public/404.html',
 );
