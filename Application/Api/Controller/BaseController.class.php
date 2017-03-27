@@ -30,6 +30,8 @@ class BaseController
         $this->request = preg_replace_callback('/\\n\s+/',function(){
             return '';
         },removeBOM(@file_get_contents('php://input')));
+	
+        Log::write('[请求参数]:'.$this->request);
 
         Log::write('[请求参数]:'.$this->request);
 
