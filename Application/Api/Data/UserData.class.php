@@ -160,4 +160,28 @@ class UserData extends BaseData{
 
         return array("meResult"=>$meResult,"achiveArray"=>$achiveArray,"clothesArray"=>$clothesArray,"footArray"=>$footArray);
     }
+
+    /**
+     * 获取用户的粉丝关注信息
+     * @param $conditions
+     * @return mixed
+     */
+    public function getUserFans($conditions){
+        if($conditions == 1){
+            $data = $this->table('__USERINFORMATION__ AS user')
+                ->field('user.userID,user.userName,user.userLV,user.userSign,user.userGlory,user.userHead')
+                ->join('__FRIENDS__ as friends ON friends.friendID = user.userID')
+                ->where("friends.userID = %d AND friends.userID != user.userID",$conditions['userID'])
+                ->select();
+        }else{
+            $data = $this->table('__USERINFORMATION__ AS user')
+                ->field('user.userID,user.userName,user.userLV,user.userSign,user.userGlory,user.userHead')
+                ->join('__FRIENDS__ as friends ON friends.userID = user.userID')
+                ->where("friends.friendID = %d AND friends.friendID != user.userID",$conditions['userID'])
+                ->select();
+        }
+
+
+        return $data;
+    }
 }
