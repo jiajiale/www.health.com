@@ -724,7 +724,7 @@ class XingeApp
 
     private function ValidateMessageType($message)
     {
-        if (intval($this->accessId) >= XingeApp::IOS_MIN_ID and $message instanceof MessageIOS)
+        if ($this->accessId >= XingeApp::IOS_MIN_ID and $message instanceof MessageIOS)
             return true;
         else if (intval($this->accessId) < XingeApp::IOS_MIN_ID and $message instanceof Message)
             return true;

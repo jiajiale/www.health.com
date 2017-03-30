@@ -71,6 +71,24 @@ class UserLogic extends BaseLogic{
     }
 
     /**
+     * 获取用户金钱信息
+     * @param $conditions
+     * @return mixed
+     */
+    public function getUserMoney($conditions){
+        return $this->userData->getUserMoney($conditions);
+    }
+
+    /**
+     * 获取用户的推送消息
+     * @param $conditions
+     * @return mixed
+     */
+    public function getUserMessage($conditions){
+        return $this->userData->getUserMessage($conditions);
+    }
+
+    /**
      * 获取完整的用户资料
      * @param $conditions
      * @return array
@@ -103,8 +121,8 @@ class UserLogic extends BaseLogic{
         $isAttention = count($checkAttention) ? 1 : 0;
 
         // 获取用户的关注信息(关注数量)
-        $fans = $Friends->where("userID = %d AND friendID = %d",array($conditions['userID'],$conditions['friendID']))->count();
-        $attentions = $Friends->where("userID = %d AND friendID = %d",array($conditions['friendID'],$conditions['userID']))->count();
+        $fans = $Friends->where("userID = %d AND userID != friendID",$conditions['userID'])->count();
+        $attentions = $Friends->where("userID = %d AND userID != friendID",$conditions['friendID'])->count();
 
         $userInfo['attention'] = $attentions;
         $userInfo['fans'] = $fans;
@@ -112,7 +130,7 @@ class UserLogic extends BaseLogic{
         return array(
             "info" => $userInfo,
             "fans" => $isFans,
-            "attention" => $attentions,
+            "attention" => $isAttention,
             "number" => array("attention" => $attentions,"fans" => $fans)
         );
     }

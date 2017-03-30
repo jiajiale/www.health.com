@@ -41,8 +41,8 @@ class ArticleData extends BaseData{
             }else{
                 $data = $this->table('__SAYTABLE__ AS say')
                     ->field('say.sayID,say.userID,say.sayText,say.sayImage,say.sayTime,user.userName,user.userHead,user.userLV,user.userGlory')
-                    ->join('__USERINFORMATION__ AS user ON user.userID = friends.friendID',"LEFT")
                     ->join('__FRIENDS__ AS friends ON friends.friendID = say.userID',"LEFT")
+                    ->join('__USERINFORMATION__ AS user ON user.userID = friends.friendID',"LEFT")
                     ->where("friends.userID = %d AND say.sayID < %d",array($conditions['userID'],$conditions['sayID']))
                     ->order('say.sayTime DESC')
                     ->limit(5)
@@ -113,9 +113,9 @@ class ArticleData extends BaseData{
      */
     public function getUserSay($conditions){
         $data = $this->table('__USERINFORMATION__ AS user')
-            ->field('user.userID,user.userName,user.userGlory,user.userHead,syaTable.sayMessage,syaTable.textTime,syaTable.friendID,syaTable.sayKind')
-            ->join('__SAYTABLE__ AS sayTable ON user.userID = sayTable.userID',"LEFT")
-            ->where("sayTable.sayID = %d AND syaTable.sayKind < 2",array($conditions['sayID']))
+            ->field('user.userID,user.userName,user.userGlory,user.userLV,user.userHead,sayTable.sayMessage,sayTable.textTime,sayTable.friendID,sayTable.sayKind')
+            ->join('__SAYTEXTTABLE__ AS sayTable ON user.userID = sayTable.userID',"LEFT")
+            ->where("sayTable.sayID = %d AND sayTable.sayKind < 2",array($conditions['sayID']))
             ->order('sayTable.textTime DESC')
             ->select();
 
@@ -130,8 +130,8 @@ class ArticleData extends BaseData{
     public function getSayUserImage($conditions){
         $data = $this->table('__USERINFORMATION__ AS user')
             ->field('user.userID,user.userHead')
-            ->join('__SAYTABLE__ AS sayTable ON user.userID = sayTable.userID',"LEFT")
-            ->where("sayTable.sayID = %d AND syaTable.sayKind = 2",array($conditions['sayID']))
+            ->join('__SAYTEXTTABLE__ AS sayTable ON user.userID = sayTable.userID',"LEFT")
+            ->where("sayTable.sayID = %d AND sayTable.sayKind = 2",array($conditions['sayID']))
             ->order('sayTable.textTime DESC')
             ->select();
 

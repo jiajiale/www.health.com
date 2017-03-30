@@ -1,6 +1,8 @@
 <?php
 namespace Api\Controller\V1;
 use Api\Controller\BaseController;
+use Common\Util\Xinge;
+use Think\Log;
 
 class FriendsController extends BaseController{
 
@@ -82,6 +84,7 @@ class FriendsController extends BaseController{
         $this->validate('请输入friendID');
 
         $Friends = D('Friends');
+        $UserInformation = D('Userinformation');
         $Achiveprogress = D('Achiveprogress');
 
         $friendsInfo = $Friends->where("userID = %d AND friendID = %d",array($data['userID'],$data['friendID']))->find();
@@ -98,7 +101,11 @@ class FriendsController extends BaseController{
 
                     $Achiveprogress->where('userID = %d',$data['userID'])->save($achiveInfo);
                 }
-                // todo 推送关注消息
+
+                $Xinge = new Xinge();
+                $token = $UserInformation->where('userID = %d',$data['friendID'])->getField('token');
+                $result = $Xinge->PushTokenIos($data['userName'].'关注了你',$token);
+                Log::write('推送消息结果：'.json_encode($result));
 
                 $this->apiSuccess('关注好友成功');
             }else{
@@ -174,9 +181,10 @@ class FriendsController extends BaseController{
         $resultArray = array();
         if(count($userInfo) > 0){
             foreach($userInfo as $key => $val){
-                $val['number'] = $Friends->where("friendID = %d AND userID != friendID",$data['friendID'])->count();
-                $val['fans'] = $Friends->where("userID = %d AND friendID= %d",array($data['userID'],$data['friendID']))->count();
-                $val['attention'] = $Friends->where("userID = %d AND friendID= %d",array($data['friendID'],$data['userID']))->count();
+                $friendID = $val["userID"];
+                $val['number'] = $Friends->where("friendID = %d AND userID != friendID",$friendID)->count();
+                $val['fans'] = $Friends->where("userID = %d AND friendID= %d",array($data['userID'],$friendID))->count();
+                $val['attention'] = $Friends->where("userID = %d AND friendID= %d",array($friendID,$data['userID']))->count();
 
                 $resultArray[] = $val;
             }

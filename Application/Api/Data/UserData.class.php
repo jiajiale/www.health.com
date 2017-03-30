@@ -138,7 +138,7 @@ class UserData extends BaseData{
         $meResult["dayFoot"]= $Footinformation->where("userID = %d AND time = '%s'",array($conditions['userID'],$conditions['yesterDay']))->getField('foot');
 
         $meResult = $this->table('__USERINFORMATION__ AS user')
-            ->field('progress.userLV,progress.achivePoint,progress.userFans,user.userName,user.userGlory,user.userHead,user.userImage,user.userImageSet,user.backImageView')
+            ->field('progress.userLV,progress.achivePoint,progress.userFans,progress.appearanceNum,user.userName,user.userGlory,user.userHead,user.userImage,user.userImageSet,user.backImageView')
             ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = user.userID')
             ->where("user.userID = %d",$conditions['userID'])
             ->find();
@@ -167,7 +167,7 @@ class UserData extends BaseData{
      * @return mixed
      */
     public function getUserFans($conditions){
-        if($conditions == 1){
+        if($conditions['condition'] == 1){
             $data = $this->table('__USERINFORMATION__ AS user')
                 ->field('user.userID,user.userName,user.userLV,user.userSign,user.userGlory,user.userHead')
                 ->join('__FRIENDS__ as friends ON friends.friendID = user.userID')
@@ -182,6 +182,51 @@ class UserData extends BaseData{
         }
 
 
+        return $data;
+    }
+
+    /**
+     * 获取用户的金钱信息
+     * @param $conditions
+     * @return mixed
+     */
+    public function getUserMoney($conditions){
+        $data = $this->table('__USERINFORMATION__ AS user')
+            ->field('user.userMoney, progress.spendMoney, progress.daySpendMoney')
+            ->join('__ACHIVEPROGRESS__ as progress ON progress.userID = user.userID')
+            ->where("user.userID = %d",$conditions['userID'])
+            ->find();
+
+        return $data;
+    }
+
+    /**
+     * 获取用户的推送消息
+     * @param $conditions
+     * @return array
+     */
+    public function getUserMessage($conditions){
+        $data = array();
+
+        if($conditions['condition'] == 1){
+            $data = $this->table('__USERINFORMATION__ AS user')
+                ->field('user.userID,user.userName,user.userGlory,user.userHead,texttable.sayMessage,texttable.textTime,texttable.sayID,texttable.sayKind,texttable.number,saytable.sayImage')
+                ->join('__SAYTEXTTABLE__ as texttable ON texttable.userID = user.userID')
+                ->join('__SAYTABLE__ as saytable ON saytable.sayID = texttable.sayID')
+                ->where("saytable.userID = %d AND user.userID != saytable.userID",$conditions['userID'])
+                ->order("texttable.textTime DESC")
+                ->limit(10)
+                ->select();
+        }elseif($conditions['condition'] == 2){
+            $data = $this->table('__USERINFORMATION__ AS user')
+                ->field('user.userID,user.userName,user.userGlory,user.userHead,texttable.sayMessage,texttable.textTime,texttable.sayID,texttable.sayKind,texttable.number,saytable.sayImage')
+                ->join('__SAYTEXTTABLE__ as texttable ON texttable.userID = user.userID')
+                ->join('__SAYTABLE__ as saytable ON saytable.sayID = texttable.sayID')
+                ->where("saytable.userID = %d AND user.userID != saytable.userID AND texttable.number < %d",array($conditions['userID'],$conditions['lastNumber']))
+                ->order("texttable.textTime DESC")
+                ->limit(5)
+                ->select();
+        }
         return $data;
     }
 }

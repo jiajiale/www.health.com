@@ -58,6 +58,8 @@ class UserController extends BaseController{
         $this->validate('请输入密码');
         $this->validator->rule('required', 'uuid');
         $this->validate('请输入设备id号');
+        $this->validator->rule('required', 'token');
+        $this->validate('请输入token');
 
         $UserInformation = D('Userinformation');
 
@@ -73,8 +75,11 @@ class UserController extends BaseController{
             if(!$userForbidden || $userForbidden['isOK'] == 0){
                 // 验证用户密码是否正确
                 if($user['userPassword'] == $data['userPassword']){
-                    // 更新用户的设备信息
-                    $result = $UserInformation->where("userId = '%s'",$user['userID'])->setField('UUID',$data['uuid']);
+                    // 更新用户的设备信息和用户的token
+                    $result = $UserInformation->where("userId = '%s'",$user['userID'])->save(array(
+                        'UUID' => $data['uuid'],
+                        'token' => $data['token']
+                    ));
 
                     if($result !== false){
                         // 获取用户的信息
@@ -463,5 +468,64 @@ class UserController extends BaseController{
         }else{
             $this->apiError('没有找到信息');
         }
+    }
+
+    /**
+     * 增加钻石
+     */
+    public function addDiamond(){
+        $this->validator->rule('required', 'userID');
+        $this->validate('请输入userID');
+        $this->validator->rule('required', 'userDiamond');
+        $this->validate('请输入userDiamond');
+
+        $diamondArr = array(200,450,1300,3000,6000);
+        $data = $this->getAvailableData();
+
+        if(!in_array($data['userDiamond'],$diamondArr)){
+            $this->apiError('请求参数不正确');
+        }
+
+        $UserInformation = D('Userinformation');
+
+        $userInfo = $UserInformation->field('userDiamond')->where('userID = %d',$data['userID'])->find();
+
+        if($userInfo){
+            $result = $UserInformation->where('userID = %d',$data['userID'])->setInc('userDiamond',($userInfo['userDiamond'] + $data['userDiamond']));
+
+            if($result !== false){
+                $this->apiSuccess('增加钻石成功');
+            }else{
+                $this->apiError('增加钻石失败');
+            }
+        }else{
+            $this->apiError('用户信息不存在');
+        }
+    }
+
+    /**
+     * 获取推送消息
+     */
+    public function getMessage(){
+        $this->validator->rule('required', 'userID');
+        $this->validate('请输入userID');
+        $this->validator->rule('required', 'condition');
+        $this->validate('请输入condition');
+
+        $data = $this->getAvailableData();
+
+        if($data['condition'] == 2){
+            $this->validator->rule('required', 'lastNumber');
+            $this->validate('请输入lastNumber');
+        }
+
+        $message = $this->userLogic->getUserMessage($data);
+
+        if(count($message)){
+            $this->apiSuccess(array("info" => $message,"time" => date('Y-m-d H:i:s',time())),'获取消息成功');
+        }else{
+            $this->apiError('没有找到任何数据');
+        }
+
     }
 }

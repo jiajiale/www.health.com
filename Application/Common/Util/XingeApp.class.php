@@ -154,7 +154,7 @@ class XingeApp
     /**
      * 推送消息给单个设备
      */
-    public function PushSingleDevice($deviceToken, $message, $environment = 0)
+    public function  PushSingleDevice($deviceToken, $message, $environment = 0)
     {
         $ret = array('ret_code' => -1, 'err_msg' => 'message not valid');
 
@@ -724,7 +724,7 @@ class XingeApp
 
     private function ValidateMessageType($message)
     {
-        if (intval($this->accessId) >= XingeApp::IOS_MIN_ID and $message instanceof MessageIOS)
+        if ($this->accessId >= XingeApp::IOS_MIN_ID and $message instanceof MessageIOS)
             return true;
         else if (intval($this->accessId) < XingeApp::IOS_MIN_ID and $message instanceof Message)
             return true;

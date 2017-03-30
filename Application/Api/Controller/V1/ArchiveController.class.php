@@ -116,7 +116,7 @@ class ArchiveController extends BaseController{
 
                     break;
                 case 4:
-
+                    $this->getAwardFoot($data);
                     break;
                 case 5:
                     $this->getSignAward($data);
@@ -151,6 +151,25 @@ class ArchiveController extends BaseController{
             $this->apiSuccess(null,'领取奖励成功');
         }else{
             $this->apiError('领取奖励失败');
+        }
+    }
+
+    /**
+     * 获取点赞和步数
+     * @param $data
+     */
+    public function getAwardFoot($data){
+        $this->validator->rule('required', 'userID');
+        $this->validate('请输入userID');
+
+        $AchiveProgress = D('Achiveprogress');
+
+        $data = $AchiveProgress->field('dayZan,dayFoot')->where("userID = %d",$data['userID'])->find();
+
+        if($data){
+            $this->apiSuccess(array("info" => array($data['dayZan'],$data['dayFoot'])));
+        }else{
+           $this->apiError('没有找到相关信息');
         }
     }
 
