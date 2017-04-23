@@ -1,0 +1,64 @@
+<layout name="Layout/base_layout"  replace="{__CONTENT__}" />
+
+<body>
+
+<div class="wrap">
+
+    <div class="nav">
+        <div class="form_title">
+            <span>权限管理</span>
+        </div>
+    </div>
+
+    <div class="tools">
+        <ul class="toolbar">
+            <li><a href="{:U('add')}" class="btn J_dialog" title="添加权限">添加</a></li>
+        </ul>
+    </div>
+
+    <div class="h_a">搜索</div>
+    <div class="search_type cc mb10">
+        <form action="{:U('index')}" method="get">
+            <ul>
+                <li><label>权限名称</label><input name="name" type="text" class="input length_2 mr10" value="{$params.name}"></li>
+                <li><button type="submit" class="btn btn_submit mr20">搜索</button><button type="button" class="btn btn_reset ">重置</button></li>
+            </ul>
+        </form>
+    </div>
+
+    <div class="table_list">
+        <table width="100%">
+            <thead>
+            <tr>
+                <th><input name="" type="checkbox" value="" checked="checked"/></th>
+                <th>ID<i class="sort"><img src="__IMG__/px.gif" /></i></th>
+                <th>权限名称</th>
+                <th>权限状态</th>
+                <th>权限编码</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <foreach name="list" item="permission" >
+                <tr>
+                    <td><input name="" type="checkbox" value="" /></td>
+                    <td>{$permission.id}</td>
+                    <td>{$permission.name}</td>
+                    <td>{$permission.status|\\Common\\Util\\EnumTemplate::getEnumDesc='PermissionStatus'}</td>
+                    <td>{$permission.code}</td>
+                    <td>
+                        <a href="{:U('edit',array('id'=>$permission['id']))}" class="tablelink J_dialog" title="修改权限">[修改]</a>
+                        <a href="{:U('do_del',array('id'=>$permission['id']))}" class="tablelink J_ajax_del" title="删除权限"> [删除]</a></td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+    </div>
+
+    <include file="Public:page" />
+
+</div>
+<script type="text/javascript" src="__JS__/common.js"></script>
+
+</body>

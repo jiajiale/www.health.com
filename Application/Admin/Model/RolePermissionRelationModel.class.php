@@ -11,6 +11,6 @@ namespace Admin\Model;
 
 class RolePermissionRelationModel extends BaseModel{
     //定义表前缀
-    protected $tablePrefix = 'st_common_';
+    protected $tablePrefix = '';
 
 }

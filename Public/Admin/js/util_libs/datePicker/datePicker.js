@@ -192,7 +192,7 @@
             min = "0";
         }
         // use sane values for value, min & max
-        value = parseDate(value) || now;
+        value = parseDate(value) || new Date(now.getFullYear(),now.getMonth(),now.getDay() - 1);
         min = parseDate(min || options.yearRange[0] * 365);
         max = parseDate(max || options.yearRange[1] * 365);
 

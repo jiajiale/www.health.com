@@ -420,9 +420,10 @@ button.btn_big {
 /*提交按钮*/
 .btn_submit {
     background-position: 0 -120px;
-    background-color: rgb(63,150,201);
+    /*background-color: rgb(63,150,201);*/
+    background-color: #3c3c46;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-    border-color: #106bab #106bab #0d68a9;
+    border-color: #191919;
 }
 
 .btn_submit:hover {
@@ -546,10 +547,13 @@ textarea {
     resize: vertical;
 }
 
-select,
-input[type="file"] {
+select{
     height: 28px;
     line-height: 28px;
+}
+input[type="file"] {
+    height: 100%;
+    line-height: 100%;
 }
 
 select[size] {
@@ -1019,7 +1023,7 @@ a:hover {
 .nav div.form_title span{
     font-weight:bold;
     font-size:14px;
-    border-bottom:solid 3px #66c9f3;
+    border-bottom:solid 3px #3c3c46;
     float:left;
     position:absolute;
     z-index:100;
@@ -1223,12 +1227,22 @@ a:hover {
     height:28px;
 }
 .pageList li.current{
-    background: rgb(59,149,200);
+    background: #3c3c46;
 }
 .pageList li.current a{
     color: #fff;
 }
-
+/*
+===================
+统计样式
+===================
+*/
+.statistic{
+    float: left;
+    position: relative;
+    margin-top: 10px;
+    padding: 0 12px;
+}
 /*
 ===================
 三列列表
@@ -1362,6 +1376,7 @@ input:radio + span {
     font-weight: normal;
     line-height: 24px;
     vertical-align: middle;
+    text-align: center;
 }
 
 .table_full .th {
@@ -1376,6 +1391,7 @@ input:radio + span {
     padding: 7px 10px 9px 15px;
     color: #666;
     vertical-align: middle;
+    border-right: 1px solid #e5e3e3;
 }
 
 .table_full tr:hover th {
@@ -1393,6 +1409,9 @@ input:radio + span {
 }
 
 .table_full tr .fun_tips span{
+    color: #f00;
+}
+.fun_tips span{
     color: #f00;
 }
 
@@ -1422,7 +1441,7 @@ input:radio + span {
     height: 180px;
     margin-left:-225px;
     margin-top: -90px;
-    border:1px solid rgb(183,213,213);
+    border:1px solid #c8c8c8;
 }
 .error_title{
     height: 25px;
@@ -1446,7 +1465,7 @@ input:radio + span {
 }
 .error_tips{
     text-align: center;
-    background:rgb(237,246,250);
+    background:rgb(230,230,230);
     height: 28px;
     line-height: 28px;
 }
@@ -1999,4 +2018,81 @@ div.focus_thumb{
 div.focus_thumb img{
     width: 100%;
     height: 100%;
+}
+
+/*
+===================
+上传插件样式
+===================
+*/
+.weui_uploader_file {
+    float: left;
+    margin-top: 20px;
+    margin-right: 9px;
+    margin-bottom: 9px;
+    width: 79px;
+    height: 79px;
+    background: no-repeat center center;
+    background-size: cover;
+}
+.weui_uploader_status {
+    position: relative;
+}
+.weui_uploader_status:before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border:1px solid #ccc;
+}
+.weui_uploader_status .weui_uploader_status_content {
+    text-align: center;
+    margin-top: 85px;
+}
+.weui_uploader_input_wrp {
+    float: left;
+    position: relative;
+    margin-top: 20px;
+    margin-right: 9px;
+    margin-bottom: 20px;
+    width: 77px;
+    height: 77px;
+    border: 1px solid #D9D9D9;
+}
+.weui_uploader_input_wrp:before,
+.weui_uploader_input_wrp:after {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background-color: #D9D9D9;
+}
+.weui_uploader_input_wrp:before {
+    width: 2px;
+    height: 39.5px;
+}
+.weui_uploader_input_wrp:after {
+    width: 39.5px;
+    height: 2px;
+}
+.weui_uploader_input_wrp:active {
+    border-color: #999999;
+}
+.weui_uploader_input_wrp:active:before,
+.weui_uploader_input_wrp:active:after {
+    background-color: #999999;
+}
+.weui_uploader_input {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }

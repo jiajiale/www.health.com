@@ -436,8 +436,8 @@
             },
             'cancel': {}
         },
-        width: 700,
-        height: 408
+        width: 500,
+        height: 300
     }, function (editor, $w, url, state) {
         Base.callback(editor, $w, url, state)
     })

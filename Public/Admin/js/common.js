@@ -26,6 +26,32 @@
        });
    }
 
+    // 图片放大预层
+    if ($('img.J_dialog_preview').length) {
+        Wind.css('layer',function(){
+            Wind.use('layer', function () {
+                $('.J_dialog_preview').on('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var _this = $(this);
+                    var src = _this.attr('src');
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 0,
+                        skin: 'layui-layer-nobg', //没有背景色
+                        shadeClose: true,
+                        content: '<img src="'+ src +'" style="width: 100%;height: 100%;"/>'
+                    });
+                });
+
+                $('.J_dialog_tips').on('mouseout',function(){
+                    layer.closeAll('tips');
+                });
+            });
+        });
+    }
+
     //dialog弹窗内的关闭方法
     $('#J_dialog_close').on('click', function (e) {
         e.preventDefault();
@@ -144,6 +170,10 @@
                         serviceUrl:href,
                         onSelect: function (suggestion) {
                             $(".J_complete").trigger('blur');
+
+                            if(typeof complete == 'function'){
+                                complete(suggestion);
+                            }
                         }
                     });
                 });
@@ -322,33 +352,45 @@
 
                         if (data.state === 'success') {
 
-                            $('<span class="tips_success">' + data.message + '</span>').appendTo(btn.parent()).fadeIn('slow').delay(500).fadeOut(function () {
-                                if (typeof callback =='function') {
-
-                                    callback(data.data);
-
-                                    if (window.parent.Wind.dialog) {
-                                        window.parent.Wind.dialog.closeAll()
-                                    }
-
-                                }
-                                if (data.referer) {
-                                    //返回带跳转地址
-                                    //if (window.parent.Wind.dialog) {
-                                    //    //iframe弹出页
-                                    //    window.parent.location.href = decodeURIComponent(data.referer);
-                                    //} else {
-                                    window.location.href = decodeURIComponent(data.referer);
-                                    //}
-                                } else {
-                                    if (window.parent.Wind != undefined && window.parent.Wind.dialog) {
+                            if(data.href){
+                                //window.parent.Wind.dialog.closeAll();
+                                window.parent.Wind.dialog.open(data.href, {
+                                    onClose: function () {
                                         reloadPage(window.parent);
-                                    } else {
-                                        reloadPage(window);
-                                    }
-                                }
+                                    },
+                                    title: data.message,
+                                    isDrag:false
+                                });
+                            }else{
+                                $('<span class="tips_success">' + data.message + '</span>').appendTo(btn.parent()).fadeIn('slow').delay(500).fadeOut(function () {
+                                    if (typeof callback =='function') {
 
-                            });
+                                        callback(data.data);
+
+                                        if (window.parent.Wind.dialog) {
+                                            window.parent.Wind.dialog.closeAll()
+                                        }
+
+                                    }
+                                    if (data.referer) {
+                                        //返回带跳转地址
+                                        //if (window.parent.Wind.dialog) {
+                                        //    //iframe弹出页
+                                        //    window.parent.location.href = decodeURIComponent(data.referer);
+                                        //} else {
+                                        window.location.href = decodeURIComponent(data.referer);
+                                        //}
+                                    } else {
+                                        if (window.parent.Wind != undefined && window.parent.Wind.dialog) {
+                                            reloadPage(window.parent);
+                                        } else {
+                                            reloadPage(window);
+                                        }
+                                    }
+
+                                });
+                            }
+
                         } else if (data.state === 'fail') {
                             $('<span class="tips_error">' + data.message + '</span>').appendTo(btn.parent()).fadeIn('fast');
                             btn.removeProp('disabled').removeClass('disabled');
@@ -548,6 +590,113 @@
 function reloadPage(win) {
     var location = win.location;
     location.href = location.pathname + location.search;
+}
+
+// 删除单张图片上传图像
+function removeImageSingle(_this,node,input){
+    console.log(node);
+    console.log(input);
+    Wind.confirm('确认要删除吗',function(){
+        // 移除隐藏域元素
+        var index = $('#' + node + ' li').index($(_this).parents('li'));
+        $("#" + input + " input[name='file']").val('');
+        $($('#' + input + ' input').get(index + 1)).val('');
+
+        // 移除节点元素
+        $(_this).parents('li').remove();
+    });
+}
+
+// 删除多张图片上传图像
+function removeImageMulti(_this,node,input){
+    console.log(node);
+    console.log(input);
+    Wind.confirm('确认要删除吗',function(){
+        // 移除隐藏域元素
+        var index = $('#' + node + ' li').index($(_this).parents('li'));
+        $("#" + input + " input[name='file']").val('');
+        $('#' + input + ' input').get(index + 1).remove();
+
+        // 移除节点元素
+        $(_this).parents('li').remove();
+    });
+}
+
+// 上传单张图像
+function uploadImageSingle(selector,preview_box,preview_input,hidden_input){
+    var element = document.querySelector('#'+selector);
+    var upload_url = $('#'+selector).data('href');
+    var base_url = $('#'+selector).data('url') + '/';
+    element.onchange = function (e) {
+        lrz(this.files[0], {width: 640, fieldName: "file1"}).then(function (rst) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', upload_url);
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var obj = eval('(' + xhr.responseText + ')');
+                    console.log(obj.data);
+                    $('#'+preview_box).html('<li class="weui_uploader_file weui_uploader_status" style="background-image:url(' + base_url + obj.href + '?' + Math.random() +')"><div class="weui_uploader_status_content"><a href="javascript:void(0);" onclick="removeImageSingle(this,\'' + preview_box + '\',\'' + preview_input + '\')" class="weui_icon_cancel">删除</a></div></li>');
+                    $("#"+preview_input+" input[name='"+hidden_input+"']").val(obj.href);
+                } else {
+                    // 处理其他情况
+                }
+            };
+
+            // 添加参数
+            rst.formData.append('size', rst.fileLen);
+            rst.formData.append('base64', rst.base64);
+            // 触发上传
+            xhr.send(rst.formData);
+
+            return rst;
+        }).catch(function (err) {
+            alert(err);
+        }).always(function () {
+            // 不管是成功失败，这里都会执行
+        });
+    }
+}
+
+// 上传多张图像
+function uploadImageMulti(selector,preview_box,preview_input,hidden_input){
+    var element = document.querySelector('#'+selector);
+    var upload_url = $('#'+selector).data('href');
+    var base_url = $('#'+selector).data('url') + '/';
+    element.onchange = function (e) {
+        var files = e.target.files;
+        var len = files.length;
+        for (var i = 0; i < len; i++) {
+            lrz(files[i], {width: 640, fieldName: "file1"}).then(function (rst) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', upload_url);
+
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        var obj = eval('(' + xhr.responseText + ')');
+                        console.log(obj.data);
+                        $('#'+preview_box).append('<li class="weui_uploader_file weui_uploader_status" style="background-image:url(' + base_url + obj.href + ')"><div class="weui_uploader_status_content"><a href="javascript:void(0);" onclick="removeImageMulti(this,\'' + preview_box + '\',\'' + preview_input + '\')" class="weui_icon_cancel">删除</a></div></li>');
+                        $('#'+preview_input).append('<input value="' + obj.href + '"  type="hidden"  name="' + hidden_input + '" />');
+                    } else {
+                        // 处理其他情况
+                    }
+                };
+
+                // 添加参数
+                rst.formData.append('size', rst.fileLen);
+                rst.formData.append('base64', rst.base64);
+                // 触发上传
+                xhr.send(rst.formData);
+
+                return rst;
+            }).catch(function (err) {
+                alert(err);
+            }).always(function () {
+                // 不管是成功失败，这里都会执行
+            });
+
+        }
+    }
 }
 
 function initWebUploadify(item, options){

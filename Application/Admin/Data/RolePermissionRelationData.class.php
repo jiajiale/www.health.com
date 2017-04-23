@@ -11,7 +11,7 @@ namespace Admin\Data;
 
 class RolePermissionRelationData extends BaseData{
     //定义表前缀
-    protected $tablePrefix = 'st_common_';
+    protected $tablePrefix = '';
 
     /**
      * 获取查询条件

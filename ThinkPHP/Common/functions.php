@@ -1024,32 +1024,6 @@ function U($url='',$vars='',$suffix=true,$domain=false) {
         $url  .= '#'.$anchor;
     }
 
-    $module = strtolower(MODULE_NAME);
-
-    if($module == 'home' || $module == 'group' || $module == 'admin'){
-        if(substr($url,0,4) != '/tuan'){
-            $url = '/tuan' . $url;
-        }
-    }
-
-    if($module == 'activities' || $module == 'promotion'){
-        if(substr($url,0,4) != '/huo'){
-            $url = '/huo' . $url;
-        }
-    }
-//    switch($module){
-//        case 'home':
-//            if(substr($url,0,4) != '/tuan'){
-//                $url = '/tuan' . $url;
-//            }
-//            break;
-////        case 'group':
-////            if(substr($url,0,5) != '/group'){
-////                $url = '/group' . $url;
-////            }
-////            break;
-//    }
-
     if($domain) {
         $url   =  (is_ssl()?'https://':'http://').$domain.$url;
     }

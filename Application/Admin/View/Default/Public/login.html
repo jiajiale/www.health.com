@@ -8,7 +8,7 @@
     <style type="text/css">
         body{
             padding:0px;
-            background: url(__IMG__/loginbg.png) no-repeat center top #0072C6;
+            background: rgb(210,214,222);
             filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
             -moz-background-size:100% 100%;
             background-size:100% 100%;
@@ -16,28 +16,17 @@
     </style>
 </head>
 
-<script language="javascript">
-    $(function(){
-        $('.loginbox').css({'position':'absolute','left':($(window).width()-692)/2});
-        $(window).resize(function(){
-            $('.loginbox').css({'position':'absolute','left':($(window).width()-692)/2});
-        })
-    });
-</script>
-
-
-<body style="">
+<body>
 
 <div class="loginbody">
 
     <div class="systemlogo">
-        利尔达园区服务管理系统
     </div>
     <div class="loginbox">
         <form action="{:U('login')}" method="post" class="login-form">
             <ul>
-                <li><input name="username" type="text" class="loginuser" value="" onclick="JavaScript:this.value=''"/></li>
-                <li><input name="password" type="password" class="loginpwd" value="" onclick="JavaScript:this.value=''"/></li>
+                <li><input name="username" type="text" class="loginuser" placeholder="请输入用户名" value="" onclick="JavaScript:this.value=''"/></li>
+                <li><input name="password" type="password" class="loginpwd" placeholder="请输入密码" value="" onclick="JavaScript:this.value=''"/></li>
                 <li>
                     <!--<input name="submit" type="submit" class="loginbtn" value="登录" />-->
                     <button type="submit" class="loginbtn" >登录</button>

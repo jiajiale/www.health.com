@@ -11,7 +11,7 @@ namespace Admin\Data;
 
 class MenuData extends BaseData{
     //定义表前缀
-    protected $tablePrefix = 'st_common_';
+    protected $tablePrefix = '';
 
     /**
      * 获取查询条件
@@ -98,14 +98,14 @@ class MenuData extends BaseData{
         $sql = "SELECT DISTINCT
                     menu.*
                 FROM
-                    st_common_menu AS menu,
-                    st_common_menu AS menu1
+                    menu AS menu,
+                    menu AS menu1
                         INNER JOIN
-                    st_common_permission AS permission ON menu1.code = permission.code
+                    permission AS permission ON menu1.code = permission.code
                         INNER JOIN
-                    st_common_role_permission_relation AS relation ON relation.permission_id = permission.id
+                    role_permission_relation AS relation ON relation.permission_id = permission.id
                         INNER JOIN
-                    st_common_role AS role ON role.id = relation.role_id
+                    role AS role ON role.id = relation.role_id
                 WHERE
                     menu1.path LIKE CONCAT(menu.path,'%')
                 AND relation.role_id = " . $id ."

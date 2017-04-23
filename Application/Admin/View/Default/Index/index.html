@@ -39,7 +39,7 @@
 
         // 顶部导航菜单显示
         $.each(MENU_ITEMS,function(index,item){
-            html.push("<li><a href='javascript:void(0)' data-id='"+ index +"' target='rightFrame'><img src='__IMG__/icon0"+ (item.sort) +".png' title='"+ item.name +"'/><h2>" + item.name + "</h2></a></li>")
+            html.push("<li><a href='javascript:void(0)' data-id='"+ index +"' target='rightFrame'><img src='__IMG__/icon0"+ (index+1) +".png' title='"+ item.name +"'/><h2>" + item.name + "</h2></a></li>")
         });
 
         $('#top_nav').html(html.join(''));
