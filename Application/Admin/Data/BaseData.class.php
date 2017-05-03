@@ -13,6 +13,7 @@ use Admin\Model\BaseModel;
 
 class BaseData extends BaseModel{
 
+    protected $autoCheckFields=false;
     /**
      * 获取分页数据
      * @return Page

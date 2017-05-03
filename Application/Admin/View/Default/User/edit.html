@@ -1,0 +1,33 @@
+<layout name="Layout/dialog_layout"  replace="{__CONTENT__}" />
+
+<body style="width: 400px;">
+<form class="J_validateForm J_ajaxForm" data-role="list" action="{:U('user/do_edit')}" method="post">
+    <input type="hidden" name="id" value="{$user.id}" />
+    <div class="pop_cont pop_table" style="height:auto;">
+        <table width="100%">
+            <tr>
+				<th>用户名<!--用户名--></th>
+				<td>
+                    {$user.username}
+                </td>
+			</tr>
+            <tr>
+				<th>密码<!--密码--></th>
+				<td>
+                    <input type="password" name="password" class="input length_3">
+                </td>
+			</tr>
+            <tr>
+				<th>邮箱<!--邮箱--></th>
+				<td>
+                    <input type="text" name="email" class="input length_3" value="{$user.email}">
+                </td>
+			</tr>
+        </table>
+    </div>
+    <div class="pop_bottom">
+        <button type="button" class="btn fr" id="J_dialog_close">取消</button>
+        <button type="submit" class="btn btn_submit mr10 fr J_ajax_submit_btn J_validate_btn">提交</button>
+    </div>
+</form>
+</body>

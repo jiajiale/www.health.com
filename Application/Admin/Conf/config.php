@@ -11,6 +11,9 @@ return array(
         '__CSS__'    => __ROOT__ . '/Public/' . MODULE_NAME . '/css',
         '__JS__'     => __ROOT__ . '/Public/' . MODULE_NAME . '/js',
         '__UPLOAD__'     => __ROOT__ . '/Public/Uploads',
+        '__IMAGE__'     => __ROOT__ . '/Public/Api/image',
+        '__SAY__'     => __ROOT__ . '/Public/Api/sayImage',
+        '__MARKET__'     => __ROOT__ . '/Public/Api/marketImage',
     ),
 
     'PASSWORD_SALT_KEY' =>  'BFM!#@$^%',    //密码salt
