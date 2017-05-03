@@ -1,9 +1,7 @@
 <?php
 namespace Api\Controller\V1;
 use Api\Controller\BaseController;
-use Common\Util\Xinge;
 use Exception;
-use Think\Log;
 
 class ArticleController extends BaseController{
 
@@ -69,6 +67,7 @@ class ArticleController extends BaseController{
             'hash' => false,
             'subName' => ''
         );
+        $config['saveName'] = $data['userID'] . date('YmdHis',time()). ".png";
 
         $path = $config['rootPath'] . $config['savePath'] . $config['subName'];
 
@@ -83,9 +82,7 @@ class ArticleController extends BaseController{
             $a = explode(';', $imageArr[0]);
             $b = explode('/', $a[0]);
             $ext = $b[1]; //获取后缀
-            $config['saveName'] = $data['userID'] . date('YmdHis',time()) . '.' . $ext;
-
-            $filename = $path . '/' . $config['saveName'];
+            $filename = $path . '/' . $config['saveName'] . '.' . $ext;
 
             // 检查文件的后缀
             if(!in_array($ext,$config['exts'])){
@@ -95,13 +92,13 @@ class ArticleController extends BaseController{
             $image = base64_decode($content);
 
             if(file_put_contents($filename, $image) === false){
-                $this->apiError('图片上传失败',408);
+                $this->apiError('图片上传失败',409);
             }
 
             // 检查文件的大小
             if(filesize($filename) > $config['maxSize']){
                 unlink($filename);
-                $this->apiError('上传文件太大',407);
+                $this->apiError('上传文件太大',409);
             }
 
             $insertId = $Saytable->add(array(
@@ -113,11 +110,7 @@ class ArticleController extends BaseController{
 
             if($insertId){
                 $Daytask->where('userID = %d',$data['userID'])->setInc('dayRelease');
-                $achiveInfo = $Achiveprogress->where('userID = %d',$data['userID'])->find();
-                $achiveInfo['Release'] = $achiveInfo['Release'] + 1;
-                $Achiveprogress->save($achiveInfo);
-
-                //$Achiveprogress->where('userID = %d',$data['userID'])->setInc('Release');
+                $Achiveprogress->where('userID = %d',$data['userID'])->setInc('Release');
 
                 $this->apiSuccess(array('q' => $insertId));
             }else{
@@ -125,8 +118,7 @@ class ArticleController extends BaseController{
             }
 
         } catch (Exception $e) {
-            Log::write($e->getMessage());
-            $this->apiError('上传失败',406);
+            $this->apiError('上传失败',409);
         }
     }
 
@@ -188,7 +180,6 @@ class ArticleController extends BaseController{
 
         $Saytexttable = D('Saytexttable');
         $Achiveprogress = D('Achiveprogress');
-        $UserInformation = D('Userinformation');
 
         $zanInfo = $Saytexttable->where("userID = %d AND sayID = %d AND sayKind = 2",array($data['userID'],$data['sayID']))->select();
         $index = 0;
@@ -200,7 +191,7 @@ class ArticleController extends BaseController{
 
             $flag1 = $Saytexttable->where("userID = %d AND sayID = %d AND sayKind = 2",array($data['userID'],$data['sayID']))->delete();
 
-            $index = $flag1 !== false ? 0 : 1;
+            $index = $flag1 !== false ? 1 : 0;
 
             $userZan = $Achiveprogress->where('userID = %d',$data['userID'])->find();
             $userZan['accumulateZanNum'] = $userZan['accumulateZanNum'] - 1;
@@ -230,9 +221,7 @@ class ArticleController extends BaseController{
             $index = $flag1 !== false ? 1 : 0;
 
             if($data['sendPut'] == 1){
-                $Xinge = new Xinge();
-                $token = $UserInformation->where('userID = %d',$data['friendID'])->getField('token');
-                $Xinge->PushTokenIos($data['userName'].'点赞了你的照片',$token);
+                // todo 推送消息
             }
 
             $userZan = $Achiveprogress->where('userID = %d',$data['userID'])->find();

@@ -3,8 +3,6 @@
 namespace Api\Logic;
 
 
-use Common\Util\Xinge;
-
 class ArticleLogic extends BaseLogic{
 
     /**
@@ -78,10 +76,9 @@ class ArticleLogic extends BaseLogic{
         $Saytexttable = D('Saytexttable');
         $Daytask = D('Daytask');
         $Achiveprogress = D('Achiveprogress');
-        $UserInformation = D('Userinformation');
 
         $insertId = $Saytexttable->add(array(
-            "sayID" => $data['sayID'],
+            "sayID" => $data['syaID'],
             "userID" => $data['userID'],
             "sayMessage" => $data['sayMessage'],
             "textTime" => date('Y-m-d H:i:s',time()),
@@ -105,9 +102,7 @@ class ArticleLogic extends BaseLogic{
             }
 
             if($data['userID'] != $data['friendID']){
-                $Xinge = new Xinge();
-                $token = $UserInformation->where('userID = %d',$data['friendID'])->getField('token');
-                $Xinge->PushTokenIos($message,$token);
+                // todo 推送消息
             }
 
             return array('time'=>date('Y-m-d H:i:s',time()),'ret' => $backback);
