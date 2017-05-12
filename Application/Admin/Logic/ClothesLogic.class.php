@@ -18,8 +18,8 @@ class ClothesLogic extends BaseLogic{
      * @param $id
      * @return mixed
      */
-    public function getById($id){
-        return $this->clothesData->getById($id);
+    public function getById($clothesID){
+        return $this->clothesData->getById($clothesID);
     }
 
     /**

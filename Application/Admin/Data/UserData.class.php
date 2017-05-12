@@ -32,13 +32,14 @@ class UserData extends BaseData{
 
     /**
      * 单条记录查找
-     * @param $id
+     * @param $userID
      * @return mixed
+     * @internal param $id
      */
-    public function getById($id){
+    public function getById($userID){
         return $this->table('__USERINFORMATION__ AS user')
             ->field('user.*')
-            ->where('id=%d',$id)
+            ->where("userID = '%s'",$userID)
             ->find();
     }
 

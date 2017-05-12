@@ -38,8 +38,8 @@ class ClothesController extends BaseController{
     /**
      * 编辑视图
      */
-    public function edit($id){
-        $clothes = $this->clothesLogic->getById($id);
+    public function edit($clothesID){
+        $clothes = $this->clothesLogic->getById($clothesID);
 
         $this->assign("clothes",$clothes);
         $this->display();
@@ -48,8 +48,8 @@ class ClothesController extends BaseController{
     /**
      * 查看视图
      */
-    public function detail($id){
-        $clothes = $this->clothesLogic->getById($id);
+    public function detail($clothesID){
+        $clothes = $this->clothesLogic->getById($clothesID);
 
         $this->assign("clothes",$clothes);
         $this->display();

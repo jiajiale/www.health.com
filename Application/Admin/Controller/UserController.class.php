@@ -38,8 +38,8 @@ class UserController extends BaseController{
     /**
      * 编辑视图
      */
-    public function edit($id){
-        $user = $this->userLogic->getById($id);
+    public function edit($userID){
+        $user = $this->userLogic->getById($userID);
 
         $this->assign("user",$user);
         $this->display();
@@ -48,8 +48,8 @@ class UserController extends BaseController{
     /**
      * 查看视图
      */
-    public function detail($id){
-        $user = $this->userLogic->getById($id);
+    public function detail($userID){
+        $user = $this->userLogic->getById($userID);
 
         $this->assign("user",$user);
         $this->display();

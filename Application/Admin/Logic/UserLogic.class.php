@@ -15,11 +15,12 @@ class UserLogic extends BaseLogic{
 
     /**
      * 获取单条数据
-     * @param $id
+     * @param $userID
      * @return mixed
+     * @internal param $id
      */
-    public function getById($id){
-        return $this->userData->getById($id);
+    public function getById($userID){
+        return $this->userData->getById($userID);
     }
 
     /**

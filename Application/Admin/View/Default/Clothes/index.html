@@ -34,11 +34,8 @@
             <tr>
                 <th>衣服ID<i class="sort"></i></th>
                 <th>衣服名字<!--衣服名字--></th>
-                <th>用户头像<!--用户头像--></th>
-                <th>用户电话<!--用户电话--></th>
-                <th>用户称号<!--用户称号--></th>
-                <th>钻石数<!--钻石数--></th>
-                <th>注册时间<!--注册时间--></th>
+                <th>金币价格<!--金币价格--></th>
+                <th>钻石价格<!--钻石价格--></th>
                 <th data-code-group="clothes_edit,clothes_detail,clothes_del">操作</th>
             </tr>
             </thead>
@@ -48,21 +45,12 @@
                 <tr>
                     <td>{$clothes.clothesID}</td>
                     <td>{$clothes.clothesName}</td>
-                    <td>
-                        <if condition="$user['userHead']">
-                            <img src="__IMAGE__/{$user.userHead}" style="border-radius: 50%;width: 50px;height: 50px;margin: 10px 0px;border:1px solid #ccc;">
-                        <else/>
-                            <img src="__IMG__/default-user.jpg" style="border-radius: 50%;width: 50px;height: 50px;margin: 10px 0px;border:1px solid #ccc;">
-                        </if>
-                    </td>
-                    <td>{$user.userPhone}</td>
-                    <td>{$user.userGlory}</td>
-                    <td>{$user.userDiamond}</td>
-                    <td>{$user.registerTime}</td>
+                    <td>{$clothes.clothesMoney}</td>
+                    <td>{$clothes.clothesDiamond}</td>
                     <td data-code-group="clothes_edit,clothes_detail,clothes_del">
-                        <a href="{:U('edit',array('id'=>$user['id']))}" class="tablelink J_dialog" title="修改用户" data-code="clothes_edit">[修改]</a>
-                        <a href="{:U('detail',array('id'=>$user['id']))}" class="tablelink" title="查看用户" data-code="clothes_detail">[查看]</a>
-                        <a href="{:U('do_del',array('id'=>$user['id']))}" class="tablelink J_ajax_del" title="删除用户" data-code="clothes_del">[删除]</a>
+                        <a href="{:U('edit',array('clothesID'=>$clothes['clothesID']))}" class="tablelink J_dialog" title="修改用户" data-code="clothes_edit">[修改]</a>
+                        <a href="{:U('detail',array('clothesID'=>$clothes['clothesID']))}" class="tablelink" title="查看用户" data-code="clothes_detail">[查看]</a>
+                        <a href="{:U('do_del',array('clothesID'=>$clothes['clothesID']))}" class="tablelink J_ajax_del" title="删除用户" data-code="clothes_del">[删除]</a>
                     </td>
                 </tr>
             </foreach>
