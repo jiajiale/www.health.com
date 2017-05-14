@@ -12,7 +12,7 @@
 
     <div class="tools">
         <ul class="toolbar">
-            <li><a href="{:U('add')}" class="btn J_dialog" title="添加用户" data-code="user_add">添加</a></li>
+            <li><a href="{:U('add')}" class="btn" title="添加衣服" data-code="clothes_add">添加</a></li>
         </ul>
     </div>
 
@@ -20,9 +20,8 @@
     <div class="search_type cc mb10">
         <form action="{:U('index')}" method="get">
             <ul>
-                <li><label>用户ID<!--用户ID--></label><input name="userID" type="text" class="input mr10 length_2" value="{$params.userID}"></li>
-                <li><label>用户名<!--用户名--></label><input name="userName" type="text" class="input mr10 length_2" value="{$params.userName}"></li>
-                <li><label>用户电话<!--用户电话--></label><input name="userPhone" type="text" class="input mr10 length_2" value="{$params.userPhone}"></li>
+                <li><label>衣服ID<!--衣服ID--></label><input name="clothesID" type="text" class="input mr10 length_2" value="{$params.clothesID}"></li>
+                <li><label>衣服名<!--衣服名--></label><input name="clothesName" type="text" class="input mr10 length_2" value="{$params.clothesName}"></li>
                 <li><button type="submit" class="btn btn_submit mr20">搜索</button><button type="button" class="btn btn_reset ">重置</button></li>
             </ul>
         </form>
@@ -48,9 +47,9 @@
                     <td>{$clothes.clothesMoney}</td>
                     <td>{$clothes.clothesDiamond}</td>
                     <td data-code-group="clothes_edit,clothes_detail,clothes_del">
-                        <a href="{:U('edit',array('clothesID'=>$clothes['clothesID']))}" class="tablelink J_dialog" title="修改用户" data-code="clothes_edit">[修改]</a>
-                        <a href="{:U('detail',array('clothesID'=>$clothes['clothesID']))}" class="tablelink" title="查看用户" data-code="clothes_detail">[查看]</a>
-                        <a href="{:U('do_del',array('clothesID'=>$clothes['clothesID']))}" class="tablelink J_ajax_del" title="删除用户" data-code="clothes_del">[删除]</a>
+                        <a href="{:U('edit',array('clothesID'=>$clothes['clothesID']))}" class="tablelink" title="修改衣服" data-code="clothes_edit">[修改]</a>
+                        <a href="{:U('detail',array('clothesID'=>$clothes['clothesID']))}" class="tablelink" title="查看衣服" data-code="clothes_detail">[查看]</a>
+                        <a href="{:U('do_del',array('clothesID'=>$clothes['clothesID']))}" class="tablelink J_ajax_del" title="删除衣服" data-code="clothes_del">[删除]</a>
                     </td>
                 </tr>
             </foreach>

@@ -4,7 +4,7 @@
 <div class="wrap">
     <div class="nav">
         <div class="form_title">
-            <span>用户详情</span>
+            <span>动态详情</span>
         </div>
     </div>
     <div class="table_full">
@@ -14,65 +14,82 @@
                 <col width="80%"/>
             </tr>
             <tr>
-				<th>用户名<!--用户名--></th>
+				<th>发布用户ID<!--发布用户ID--></th>
 				<td>
-                    {$user.username}
+                    {$article.userID}
                 </td>
 			</tr>
             <tr>
-                <th>姓名<!--姓名--></th>
+                <th>发布用户名<!--发布用户名--></th>
                 <td>
-                    {$user.name}
+                    {$article.userName}
                 </td>
             </tr>
             <tr>
-                <th>联系方式<!--联系方式--></th>
+                <th>动态图片<!--动态图片--></th>
                 <td>
-                    {$user.mobile}
-                </td>
-            </tr>
-            <tr>
-                <th>国籍<!--国籍--></th>
-                <td>
-                    {$user.country}
-                </td>
-            </tr>
-            <tr>
-				<th>用户头像<!--用户头像--></th>
-				<td>
-                    <if condition="$user['avatar']">
-                        <img src="__UPLOAD__/{$user.avatar}" style="border-radius: 50%;width: 50px;height: 50px;margin: 10px 0px;border:1px solid #ccc;">
-                    <else/>
+                    <if condition="$article['sayImage']">
+                        <img src="__SAY__/{$article.sayImage}" style="max-width:120px;margin: 10px 0px;border:1px solid #ccc;">
+                        <else/>
                         <img src="__IMG__/default-user.jpg" style="border-radius: 50%;width: 50px;height: 50px;margin: 10px 0px;border:1px solid #ccc;">
                     </if>
                 </td>
-			</tr>
+            </tr>
             <tr>
-				<th>邮箱<!--邮箱--></th>
-				<td>
-                    {$user.email}
+                <th>动态内容<!--动态内容--></th>
+                <td>
+                    {$article.sayText}
                 </td>
-			</tr>
+            </tr>
             <tr>
-				<th>状态<!--状态--></th>
+				<th>发布时间<!--发布时间--></th>
 				<td>
-                    {$user.status|\\Common\\Util\\EnumTemplate::getEnumDesc='UserStatus'}
-                </td>
-			</tr>
-            <tr>
-				<th>注册时间<!--注册时间--></th>
-				<td>
-                    {$user.gmt_create}
-                </td>
-			</tr>
-            <tr>
-				<th>更新时间<!--更新时间--></th>
-				<td>
-                    {$user.gmt_update}
+                    {$article.sayTime}
                 </td>
 			</tr>
         </table>
     </div>
+
+    <div class="h_b">评论管理</div>
+    <div class="table_full">
+        <div class="search_type cc">
+            <form action="{:U('detail',array('sayID' => $article['sayID']))}" method="get">
+                <ul>
+                    <li><label>评论用户<!--评论用户--></label><input name="userName" type="text" class="input mr10 length_2" value="{$params.userName}"></li>
+                    <li><button type="submit" class="btn btn_submit mr20">搜索</button><button type="button" class="btn btn_reset ">重置</button></li>
+                </ul>
+            </form>
+        </div>
+        <table width="100%">
+            <thead>
+            <tr>
+                <th width="10%">评论ID</th>
+                <th width="15%">评论用户<!--评论用户--></th>
+                <th width="25%">评论内容<!--评论内容--></th>
+                <th width="10%">评论时间<!--评论时间--></th>
+                <th width="15%">操作</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <foreach name="list" item="comment" >
+                <tr>
+                    <td align="center">{$comment.number}</td>
+                    <td align="center">{$comment.userName}</td>
+                    <td align="center">{$comment.sayMessage}</td>
+                    <td align="center">{$comment.textTime}</td>
+                    <td align="center">
+                        <a href="{:U('do_del_comment',array('number'=>$comment['number']))}" class="tablelink J_ajax_del" title="删除评论" data-msg="确定要删除评论吗？"> [删除]</a>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+    </div>
+    <div <if condition="isset($list) && count($list) gt 0">style="min-height: 40px;"</if>>
+        <include file="Public:page" action="detail"/>
+    </div>
+
     <div class="pop_bottom">
         <a type="submit" class="btn" href="javascript:history.go(-1)" title="返回&quot;" role="button">返回</a>
     </div>

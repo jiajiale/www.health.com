@@ -20,13 +20,13 @@ class ClothesData extends BaseData{
 
     /**
      * 单条记录查找
-     * @param $id
+     * @param $clothesID
      * @return mixed
      */
-    public function getById($id){
+    public function getById($clothesID){
         return $this->table('__CLOTHESINFORMATION__ AS clothes')
             ->field('clothes.*')
-            ->where('id=%d',$id)
+            ->where('clothesID=%d',$clothesID)
             ->find();
     }
 

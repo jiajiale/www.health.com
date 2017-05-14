@@ -48,8 +48,17 @@ class ArticleController extends BaseController{
     /**
      * 查看视图
      */
-    public function detail($id){
-        $article = $this->articleLogic->getById($id);
+    public function detail($sayID){
+        $article = $this->articleLogic->getById($sayID);
+
+        $conditions = $this->getAvailableData();
+        $conditions['sayID'] = $sayID;
+        $pagePara = get_page_para();
+
+        $commentList = $this->articleLogic->getSayTextList($conditions,$pagePara);
+        $this->assign("list",$commentList['items']);
+        $this->assign("pager",$commentList['pager']);
+        $this->assign("params",$conditions);
 
         $this->assign("article",$article);
         $this->display();
@@ -78,8 +87,18 @@ class ArticleController extends BaseController{
     /**
      * 删除操作
      */
-    public function do_del($id){
-        $result = $this->articleLogic->delArticle($id);
+    public function do_del($sayID){
+        $result = $this->articleLogic->delArticle($sayID);
+
+        $this->ajaxAuto($result,'删除');
+    }
+
+    /**
+     * 删除动态评论
+     * @param $number
+     */
+    public function do_del_comment($number){
+        $result = $this->articleLogic->delArticleComment($number);
 
         $this->ajaxAuto($result,'删除');
     }

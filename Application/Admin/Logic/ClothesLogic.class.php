@@ -15,7 +15,7 @@ class ClothesLogic extends BaseLogic{
 
     /**
      * 获取单条数据
-     * @param $id
+     * @param $clothesID
      * @return mixed
      */
     public function getById($clothesID){

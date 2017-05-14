@@ -69,6 +69,7 @@ class BaseController extends Controller {
         $ajaxData['message'] = $msg;
         $ajaxData['data'] = $data;
         $ajaxData['code'] = $code;
+        $ajaxData['href'] = $data;
         $ajaxData['referer'] = $referer;
 
         $this->ajaxReturn($ajaxData);

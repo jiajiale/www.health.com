@@ -1,0 +1,153 @@
+<layout name="Layout/dialog_layout"  replace="{__CONTENT__}" />
+<script type="text/javascript" src="__JS__/lrz.min.js"></script>
+
+<body>
+<div class="wrap">
+    <div class="nav">
+        <div class="form_title">
+            <span>添加衣服</span>
+        </div>
+    </div>
+
+    <form class="J_validateForm J_ajaxForm" data-role="list" action="{:U('clothes/do_add')}" method="post">
+        <div class="table_full">
+            <table width="100%">
+                <tr>
+                    <col width="20%"/>
+                    <col width="80%"/>
+                </tr>
+                <tr>
+                    <th>衣服名称<!--衣服名称--></th>
+                    <td>
+                        <input type="text" name="clothesName" class="input length_3" value="">
+                    </td>
+                </tr>
+                <tr>
+                    <th>衣服图片（右侧列表）<!--衣服图片--></th>
+                    <td>
+                        <div class="weui_uploader_bd">
+                            <ul class="weui_uploader_files" id="clothesMarket_image">
+                            </ul>
+                            <div class="weui_uploader_input_wrp" id="clothesMarket_image_list">
+                                <input class="weui_uploader_input" type="file" accept="image/jpg,image/jpeg,image/png,image/gif"  id='clothesMarket' data-href="{:U('Image/uploadPicture',array('type'=>'clothes'))}" data-url="__MARKET__"/>
+                                <input type="hidden" name="clothesMarket" class="input length_3" value="">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>衣服图片（商品列表）<!--衣服图片--></th>
+                    <td>
+                        <div class="weui_uploader_bd">
+                            <ul class="weui_uploader_files" id="clothesNormal_image">
+                            </ul>
+                            <div class="weui_uploader_input_wrp" id="clothesNormal_image_list">
+                                <input class="weui_uploader_input" type="file" accept="image/jpg,image/jpeg,image/png,image/gif"  id='clothesNormal' data-href="{:U('Image/uploadPicture',array('type'=>'clothes'))}" data-url="__MARKET__"/>
+                                <input type="hidden" name="clothesNormal" class="input length_3" value="">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>后面图片（换装人物）<!--后面图片--></th>
+                    <td>
+                        <div class="weui_uploader_bd">
+                            <ul class="weui_uploader_files" id="clothesAfter_image">
+                            </ul>
+                            <div class="weui_uploader_input_wrp" id="clothesAfter_image_list">
+                                <input class="weui_uploader_input" type="file" accept="image/jpg,image/jpeg,image/png,image/gif"  id='clothesAfter' data-href="{:U('Image/uploadPicture',array('type'=>'clothes'))}" data-url="__MARKET__"/>
+                                <input type="hidden" name="clothesAfter" class="input length_3" value="">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>前面图片（换装人物）<!--前面图片--></th>
+                    <td>
+                        <div class="weui_uploader_bd">
+                            <ul class="weui_uploader_files" id="clothesBefore_image">
+                            </ul>
+                            <div class="weui_uploader_input_wrp" id="clothesBefore_image_list">
+                                <input class="weui_uploader_input" type="file" accept="image/jpg,image/jpeg,image/png,image/gif"  id='clothesBefore' data-href="{:U('Image/uploadPicture',array('type'=>'clothes'))}" data-url="__MARKET__"/>
+                                <input type="hidden" name="clothesBefore" class="input length_3" value="">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>中间图片（换装人物）<!--中间图片--></th>
+                    <td>
+                        <div class="weui_uploader_bd">
+                            <ul class="weui_uploader_files" id="clothesCenter_image">
+                            </ul>
+                            <div class="weui_uploader_input_wrp" id="clothesCenter_image_list">
+                                <input class="weui_uploader_input" type="file" accept="image/jpg,image/jpeg,image/png,image/gif"  id='clothesCenter' data-href="{:U('Image/uploadPicture',array('type'=>'clothes'))}" data-url="__MARKET__"/>
+                                <input type="hidden" name="clothesCenter" class="input length_3" value="">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>物品方位<!--物品方位--></th>
+                    <td>
+                        {$clothes.clothesPosition|\\Common\\Util\\EnumTemplate::enumSelect='Position',false,'clothesPosition','select'}
+                    </td>
+                </tr>
+                <tr>
+                    <th>金币数<!--金币数--></th>
+                    <td>
+                        <input type="text" name="clothesMoney" class="input length_3" value="">
+                    </td>
+                </tr>
+                <tr>
+                    <th>钻石数<!--钻石数--></th>
+                    <td>
+                        <input type="text" name="clothesDiamond" class="input length_3" value="">
+                    </td>
+                </tr>
+                <tr>
+                    <th>成就点<!--成就点--></th>
+                    <td>
+                        <input type="text" name="achivePoint" class="input length_3" value="">
+                    </td>
+                </tr>
+                <tr>
+                    <th>所属类型<!--所属类型--></th>
+                    <td>
+                        {$clothes.clothesParts|\\Common\\Util\\EnumTemplate::enumSelect='ClothesType',false,'clothesParts','select'}
+                    </td>
+                </tr>
+                <tr>
+                    <th>衣服描述<!--衣服描述--></th>
+                    <td>
+                        <textarea class="length_6" name="clothesDescripe"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th>衣服星级<!--衣服星级--></th>
+                    <td>
+                        <input type="text" name="clothesImportant" class="input length_3" value="">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="pop_bottom">
+            <button type="submit" class="btn btn_submit J_ajax_submit_btn J_validate_btn">提交</button>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(function(){
+        // 衣服图片（右侧列表）上传
+        uploadImageSingle('clothesMarket','clothesMarket_image','clothesMarket_image_list','clothesMarket');
+        // 衣服图片（商品列表）上传
+        uploadImageSingle('clothesNormal','clothesNormal_image','clothesNormal_image_list','clothesNormal');
+        // 后面图片（换装人物）上传
+        uploadImageSingle('clothesAfter','clothesAfter_image','clothesAfter_image_list','clothesAfter');
+        // 前面图片（换装人物）上传
+        uploadImageSingle('clothesBefore','clothesBefore_image','clothesBefore_image_list','clothesBefore');
+        // 中间图片（换装人物）上传
+        uploadImageSingle('clothesCenter','clothesCenter_image','clothesCenter_image_list','clothesCenter');
+    });
+</script>
+</body>

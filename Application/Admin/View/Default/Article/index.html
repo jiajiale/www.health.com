@@ -12,7 +12,7 @@
 
     <div class="tools">
         <ul class="toolbar">
-            <li><a href="{:U('add')}" class="btn J_dialog" title="添加用户" data-code="user_add">添加</a></li>
+            <li><a href="{:U('add')}" class="btn J_dialog" title="添加动态" data-code="user_add">添加</a></li>
         </ul>
     </div>
 
@@ -22,7 +22,6 @@
             <ul>
                 <li><label>用户ID<!--用户ID--></label><input name="userID" type="text" class="input mr10 length_2" value="{$params.userID}"></li>
                 <li><label>用户名<!--用户名--></label><input name="userName" type="text" class="input mr10 length_2" value="{$params.userName}"></li>
-                <li><label>用户电话<!--用户电话--></label><input name="userPhone" type="text" class="input mr10 length_2" value="{$params.userPhone}"></li>
                 <li><button type="submit" class="btn btn_submit mr20">搜索</button><button type="button" class="btn btn_reset ">重置</button></li>
             </ul>
         </form>
@@ -32,37 +31,35 @@
         <table width="100%">
             <thead>
             <tr>
-                <th>衣服ID<i class="sort"></i></th>
-                <th>衣服名字<!--衣服名字--></th>
-                <th>用户头像<!--用户头像--></th>
-                <th>用户电话<!--用户电话--></th>
-                <th>用户称号<!--用户称号--></th>
-                <th>钻石数<!--钻石数--></th>
-                <th>注册时间<!--注册时间--></th>
-                <th data-code-group="clothes_edit,clothes_detail,clothes_del">操作</th>
+                <th>动态ID<i class="sort"></i></th>
+                <th>用户ID<!--用户ID--></th>
+                <th>用户名<!--用户名--></th>
+                <th>动态图片<!--动态图片--></th>
+                <th>动态内容<!--动态内容--></th>
+                <th>发布时间<!--发布时间--></th>
+                <th data-code-group="article_edit,article_detail,article_del">操作</th>
             </tr>
             </thead>
 
             <tbody>
             <foreach name="list" item="article" >
                 <tr>
-                    <td>{$clothes.clothesID}</td>
-                    <td>{$clothes.clothesName}</td>
+                    <td>{$article.sayID}</td>
+                    <td>{$article.userID}</td>
+                    <td>{$article.userName}</td>
                     <td>
-                        <if condition="$user['userHead']">
-                            <img src="__IMAGE__/{$user.userHead}" style="border-radius: 50%;width: 50px;height: 50px;margin: 10px 0px;border:1px solid #ccc;">
+                        <if condition="$article['sayImage']">
+                            <img src="__SAY__/{$article.sayImage}" style="max-width:100px;margin: 10px 0px;border:1px solid #ccc;">
                         <else/>
                             <img src="__IMG__/default-user.jpg" style="border-radius: 50%;width: 50px;height: 50px;margin: 10px 0px;border:1px solid #ccc;">
                         </if>
                     </td>
-                    <td>{$user.userPhone}</td>
-                    <td>{$user.userGlory}</td>
-                    <td>{$user.userDiamond}</td>
-                    <td>{$user.registerTime}</td>
-                    <td data-code-group="clothes_edit,clothes_detail,clothes_del">
-                        <a href="{:U('edit',array('id'=>$user['id']))}" class="tablelink J_dialog" title="修改用户" data-code="clothes_edit">[修改]</a>
-                        <a href="{:U('detail',array('id'=>$user['id']))}" class="tablelink" title="查看用户" data-code="clothes_detail">[查看]</a>
-                        <a href="{:U('do_del',array('id'=>$user['id']))}" class="tablelink J_ajax_del" title="删除用户" data-code="clothes_del">[删除]</a>
+                    <td>{$article.sayText}</td>
+                    <td>{$article.sayTime}</td>
+                    <td data-code-group="article_edit,article_detail,article_del">
+                        <a href="{:U('edit',array('sayID'=>$article['sayID']))}" class="tablelink" title="修改动态" data-code="article_edit">[修改]</a>
+                        <a href="{:U('detail',array('sayID'=>$article['sayID']))}" class="tablelink" title="查看动态" data-code="article_detail">[查看]</a>
+                        <a href="{:U('do_del',array('sayID'=>$article['sayID']))}" class="tablelink J_ajax_del" title="删除动态" data-code="article_del">[删除]</a>
                     </td>
                 </tr>
             </foreach>

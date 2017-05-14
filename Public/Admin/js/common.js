@@ -574,14 +574,14 @@
         });
     }
 
-    $.fn.uploadify = function(options){
-        var ele = this;
-        Wind.css('uploadify',function(){
-            Wind.use('uploadify',function(){
-                initWebUploadify(ele,options);
-            });
-        });
-    }
+    // $.fn.uploadify = function(options){
+    //     var ele = this;
+    //     Wind.css('uploadify',function(){
+    //         Wind.use('uploadify',function(){
+    //             initWebUploadify(ele,options);
+    //         });
+    //     });
+    // }
 
 })(window);
 

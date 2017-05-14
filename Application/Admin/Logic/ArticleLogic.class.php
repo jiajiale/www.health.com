@@ -15,11 +15,11 @@ class ArticleLogic extends BaseLogic{
 
     /**
      * 获取单条数据
-     * @param $id
+     * @param $sayID
      * @return mixed
      */
-    public function getById($id){
-        return $this->articleData->getById($id);
+    public function getById($sayID){
+        return $this->articleData->getById($sayID);
     }
 
     /**
@@ -30,6 +30,16 @@ class ArticleLogic extends BaseLogic{
      */
     public function getList($conditions,$pagePara = null){
         return $this->articleData->getList($conditions,$pagePara);
+    }
+
+    /**
+     * 获取动态的评论
+     * @param $conditions
+     * @param null $pagePara
+     * @return mixed
+     */
+    public function getSayTextList($conditions,$pagePara = null){
+        return $this->articleData->getSayTextList($conditions,$pagePara);
     }
 
     /**
@@ -65,12 +75,38 @@ class ArticleLogic extends BaseLogic{
 
     /**
      * 删除数据
-     * @param $id
+     * @param $sayID
      * @return mixed
      */
-    public function delArticle($id){
-        $Article = D('Articleinformation');
+    public function delArticle($sayID){
+        $Saytexttable = D('Saytexttable');
+        $Sayable = D('Saytable');
 
-        return $Article->delete($id);
+        $Saytexttable->startTrans();
+        $flag1 = $Saytexttable->where('sayID = %d',$sayID)->delete();
+        $flag2 = $Sayable->where('sayID = %d',$sayID)->delete();
+
+        if($flag1 !== false && $flag2 !== false){
+            $Saytexttable->commit();
+            return true;
+        }else{
+            $Saytexttable->rollback();
+            return false;
+        }
+    }
+
+    /**
+     * 删除评论
+     * @param $number
+     * @return bool
+     */
+    public function delArticleComment($number){
+        $Saytexttable = D('Saytexttable');
+        $Daytask = D('Daytask');
+        $Achiveprogress = D('Achiveprogress');
+
+        $sayText = $Saytexttable->where("number = %d",$number)->find();
+
+        return true;
     }
 }
