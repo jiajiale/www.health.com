@@ -9,6 +9,8 @@ namespace Admin\Controller;
 
 
 
+use Admin\Enum\BoolEnum;
+
 class ManagerAccountController extends BaseController{
 
 
@@ -32,6 +34,10 @@ class ManagerAccountController extends BaseController{
     public function index(){
         $conditions = $this->getAvailableData();
         $pagePara = get_page_para();
+
+        if($this->managerData['is_system'] == BoolEnum::NO){
+            $conditions['is_system'] = BoolEnum::NO;
+        }
         $managerAccountList = $this->managerAccountLogic->getList($conditions,$pagePara);
 
         $this->assign("list",$managerAccountList['items']);
@@ -45,6 +51,9 @@ class ManagerAccountController extends BaseController{
      */
     public function add(){
         $conditions = array();
+        if($this->managerData['is_system'] == BoolEnum::NO){
+            $conditions['is_system'] = BoolEnum::NO;
+        }
         $roles = $this->roleLogic->getList($conditions);
 
         $this->assign('roles',$roles['items']);
@@ -56,6 +65,9 @@ class ManagerAccountController extends BaseController{
      */
     public function edit($id){
         $conditions = array();
+        if($this->managerData['is_system'] == BoolEnum::NO){
+            $conditions['is_system'] = BoolEnum::NO;
+        }
         $roles = $this->roleLogic->getList($conditions);
         $managerAccount = $this->managerAccountLogic->getById($id);
 

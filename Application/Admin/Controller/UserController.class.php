@@ -69,8 +69,33 @@ class UserController extends BaseController{
      * 编辑操作
      */
     public function do_edit(){
+        $User = D('Userinformation');
+
         $data = $this->getAvailableData();
-        $result = $this->userLogic->editUser($data);
+
+        $userInfo = $User->where("userID = '%s'",$data['userID'])->find();
+
+        if($userInfo['userID'] != $data['userID']){
+            $userID = $User->where("userID = '%s'",$data['userID'])->find();
+
+            if($userID){
+                $this->ajaxError('该userID已被使用');
+            }
+        }
+
+        if($userInfo['userPhone'] != $data['userPhone']){
+            $userPhone = $User->where("userPhone = '%s'",$data['userPhone'])->find();
+
+            if($userPhone){
+                $this->ajaxError('该手机号已被使用');
+            }
+        }
+
+        if(!$data['userPassword']){
+            $data['userPassword'] = $userInfo['userPassword'];
+        }
+
+        $result = $this->userLogic->editUser($data,$userInfo);
 
         $this->ajaxAuto($result,'修改');
     }

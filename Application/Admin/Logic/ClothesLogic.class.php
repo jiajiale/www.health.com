@@ -41,6 +41,9 @@ class ClothesLogic extends BaseLogic{
 
         $Clothes = D('Clothesinformation');
 
+        $result = $Clothes->query("SELECT max(cast(clothesID AS UNSIGNED)) AS clothesID FROM clothesinformation;");
+        $data['clothesID'] = $result[0]['clothesID'] + 1;
+
         if($Clothes->create($data)){
             return $Clothes->add();
         }else{
@@ -57,7 +60,7 @@ class ClothesLogic extends BaseLogic{
         $Clothes = D('Clothesinformation');
 
         if($Clothes->create($data)){
-            return $Clothes->save();
+            return $Clothes->where("clothesID = %d",$data['clothesID'])->save($data);
         }else{
             return false;
         }

@@ -54,14 +54,19 @@ class UserLogic extends BaseLogic{
      * @param $data
      * @return bool
      */
-    public function editUser($data){
+    public function editUser($data,$userInfo){
         $User = D('Userinformation');
 
-        if($User->create($data)){
-            return $User->save();
-        }else{
-            return false;
-        }
+        $userInfo['userID'] = $data['userID'];
+        $userInfo['userPassword'] = $data['userPassword'];
+        $userInfo['userName'] = $data['userName'];
+        $userInfo['userPhone'] = $data['userPhone'];
+        $userInfo['userMoney'] = $data['userMoney'];
+        $userInfo['userDiamond'] = $data['userDiamond'];
+
+        $result = $User->where("userID = '%s'",$data['id'])->save($userInfo);
+
+        return $result;
     }
 
     /**

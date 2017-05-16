@@ -1,6 +1,6 @@
 <?php
 
-namespace Api\Admin;
+namespace Admin\Model;
 
 class UserinformationModel extends BaseModel{
     //定义表前缀

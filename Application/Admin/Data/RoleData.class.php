@@ -9,9 +9,9 @@
 namespace Admin\Data;
 
 
+use Admin\Enum\BoolEnum;
+
 class RoleData extends BaseData{
-    //定义表前缀
-    protected $tablePrefix = '';
 
     /**
      * 获取查询条件
@@ -35,6 +35,10 @@ class RoleData extends BaseData{
 
         if (isset($conditions['status']) && !empty($conditions['status'])) {
             $where['role.status'] = array('EQ', $conditions['status']);
+        }
+
+        if (isset($conditions['is_system'])) {
+            $where['role.is_system'] = array('EQ', BoolEnum::NO);
         }
 
         return $where;

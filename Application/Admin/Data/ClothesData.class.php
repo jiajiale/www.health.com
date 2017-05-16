@@ -15,6 +15,10 @@ class ClothesData extends BaseData{
     public function getCondition($conditions){
         $where = array();
 
+        if (isset($conditions['clothesName']) && !empty($conditions['clothesName'])) {
+            $where['clothes.clothesName'] = array('LIKE', '%' . $conditions['clothesName'] . '%');
+        }
+
         return $where;
     }
 
@@ -43,6 +47,7 @@ class ClothesData extends BaseData{
         $data = $this->table('__CLOTHESINFORMATION__ AS clothes')
             ->field('clothes.*')
             ->where($where)
+            ->order('cast(clothesID AS UNSIGNED) DESC')
             ->page($pagePara->pageIndex, $pagePara->pageSize)
             ->selectPage();
 

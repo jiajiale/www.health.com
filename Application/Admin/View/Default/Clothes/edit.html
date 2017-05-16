@@ -9,7 +9,8 @@
         </div>
     </div>
 
-    <form class="J_validateForm J_ajaxForm" data-role="list" action="{:U('clothes/do_add')}" method="post">
+    <form class="J_validateForm J_ajaxForm" data-role="list" action="{:U('clothes/do_edit')}" method="post">
+        <input type="hidden" name="clothesID" value="{$clothes.clothesID}" />
         <div class="table_full">
             <table width="100%">
                 <tr>

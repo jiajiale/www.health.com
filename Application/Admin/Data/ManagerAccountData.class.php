@@ -9,9 +9,9 @@
 namespace Admin\Data;
 
 
+use Admin\Enum\BoolEnum;
+
 class ManagerAccountData extends BaseData{
-    //定义表前缀
-    protected $tablePrefix = '';
 
     /**
      * 获取查询条件
@@ -41,8 +41,8 @@ class ManagerAccountData extends BaseData{
             $where['manager_account.gmt_last_login'] = array('EQ', $conditions['gmt_last_login']);
         }
 
-        if (isset($conditions['last_ip']) && !empty($conditions['last_ip'])) {
-            $where['manager_account.last_ip'] = array('EQ', $conditions['last_ip']);
+        if (isset($conditions['is_system'])) {
+            $where['manager_account.is_system'] = array('EQ', BoolEnum::NO);
         }
 
         if (isset($conditions['name']) && !empty($conditions['name'])) {
