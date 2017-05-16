@@ -18,8 +18,8 @@ class ImageController extends BaseController {
         $upload = new Upload();         // 实例化上传类
         $upload->maxSize   =     3145728 ;      // 设置附件上传大小
         $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');    // 设置附件上传类型
-        $upload->rootPath  =     './Public/';   // 设置附件上传根目录
-        $upload->savePath  =     'Api/marketImage/';     // 设置附件上传（子）目录
+        $upload->rootPath  =     './Public/Api/';   // 设置附件上传根目录
+        $upload->savePath  =     'marketImage/';     // 设置附件上传（子）目录
         $upload->subName   =     '';  // 设置上传保存子目录
         $upload->saveName  =     'uniqid';
 
