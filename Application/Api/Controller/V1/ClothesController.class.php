@@ -1,5 +1,6 @@
 <?php
 namespace Api\Controller\V1;
+use Admin\Enum\BaseEnum;
 use Api\Controller\BaseController;
 
 class ClothesController extends BaseController{
@@ -35,6 +36,7 @@ class ClothesController extends BaseController{
 
                 if(count($clothesID)){
                     $map['clothesID'] = array("IN",$clothesID);
+                    $map['status'] = array("EQ",BaseEnum::ACTIVE);
                     $result = $ClothesInformation->field("clothesName,clothesMarket,clothesAfter,clothesBefore,clothesCenter,clothesImportant,clothesPosition")
                         ->where($map)->select();
                 }else{
@@ -78,10 +80,12 @@ class ClothesController extends BaseController{
             if($i == 2){
                 $map['clothesGender'] = $data['Gender'];
                 $map['clothesParts'] = array('between',array('2','4'));
+                $map['status'] = array("EQ",BaseEnum::ACTIVE);
                 $arrayTwo = $ClothesInformation->field($field)->where($map)->select();
             }else{
                 $map['clothesGender'] = $data['Gender'];
                 $map['clothesParts'] = $kindArray[$i];
+                $map['status'] = array("EQ",BaseEnum::ACTIVE);
                 $arrayTwo = $ClothesInformation->field($field)->where($map)->select();
             }
 

@@ -92,10 +92,9 @@ class ArticleLogic extends BaseLogic{
 
         if($flag1 !== false && $flag2 !== false){
             $Daytask->where('userID = %d',$userID)->setDec('dayRelease');
-            $result = $Achiveprogress->where('userID = %d',$userID)->setDec('Release')->buildSql();
+            $Achiveprogress->where('userID = %d',$userID)->setDec('`Release`');
 
-            var_dump($result);
-            $Saytexttable->rollback();
+            $Saytexttable->commit();
             return true;
         }else{
             $Saytexttable->rollback();

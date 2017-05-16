@@ -1,5 +1,6 @@
 <?php
 namespace Api\Controller\V1;
+use Admin\Enum\BaseEnum;
 use Api\Controller\BaseController;
 
 class UserController extends BaseController{
@@ -66,7 +67,7 @@ class UserController extends BaseController{
         // 验证用户是否存在
         $user = $UserInformation->where("userID = '%s' OR userPhone = '%s'",array($data['userID'],$data['userID']))->find();
 
-        if($user){
+        if($user && $user['status'] == BaseEnum::ACTIVE){
             $UserForbidden = D('Userforbidden');
 
             // 验证用户是否被禁用
