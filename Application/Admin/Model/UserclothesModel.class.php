@@ -1,8 +1,8 @@
 <?php
 
-namespace Api\Model;
+namespace Admin\Model;
 
-class UserzanModel extends BaseModel{
+class UserclothesModel extends BaseModel{
     //定义表前缀
     protected $tablePrefix = '';
     // 自动完成

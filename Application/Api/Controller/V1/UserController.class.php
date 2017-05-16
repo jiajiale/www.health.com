@@ -58,8 +58,8 @@ class UserController extends BaseController{
         $this->validate('请输入密码');
         $this->validator->rule('required', 'uuid');
         $this->validate('请输入设备id号');
-        $this->validator->rule('required', 'token');
-        $this->validate('请输入token');
+        //$this->validator->rule('required', 'token');
+        //$this->validate('请输入token');
 
         $UserInformation = D('Userinformation');
 

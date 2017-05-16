@@ -1,6 +1,6 @@
 <?php
 
-namespace Api\Model;
+namespace Admin\Model;
 
 class UserzanModel extends BaseModel{
     //定义表前缀

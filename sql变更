@@ -1,2 +1,9 @@
 ALTER TABLE `health_develop`.`userinformation`
 ADD COLUMN `token` VARCHAR(100) NULL COMMENT '推送使用的token' AFTER `userWeibo`;
+
+ALTER TABLE `health_develop`.`userinformation`
+ADD COLUMN `status` TINYINT(4) NULL DEFAULT 1 COMMENT '状态(1:正常 99:删除)' AFTER `token`;
+
+ALTER TABLE `health_develop`.`clothesinformation`
+ADD COLUMN `status` TINYINT(4) NULL DEFAULT 1 COMMENT '1:正常 99:删除' AFTER `clothesImportant`;
+

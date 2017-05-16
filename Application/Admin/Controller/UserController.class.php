@@ -103,8 +103,8 @@ class UserController extends BaseController{
     /**
      * 删除操作
      */
-    public function do_del($id){
-        $result = $this->userLogic->delUser($id);
+    public function do_del($userID){
+        $result = $this->userLogic->delUser($userID);
 
         $this->ajaxAuto($result,'删除');
     }

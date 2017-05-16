@@ -2,6 +2,8 @@
 
 namespace Admin\Logic;
 
+use Admin\Enum\BaseEnum;
+
 class ClothesLogic extends BaseLogic{
 
     /**
@@ -68,12 +70,12 @@ class ClothesLogic extends BaseLogic{
 
     /**
      * 删除数据
-     * @param $id
+     * @param $clothesID
      * @return mixed
      */
-    public function delClothes($id){
+    public function delClothes($clothesID){
         $Clothes = D('Clothesinformation');
 
-        return $Clothes->delete($id);
+        return $Clothes->where("clothesID = '%s'",$clothesID)->setField('status',BaseEnum::DELETE);
     }
 }

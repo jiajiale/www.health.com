@@ -78,8 +78,8 @@ class ClothesController extends BaseController{
     /**
      * 删除操作
      */
-    public function do_del($id){
-        $result = $this->clothesLogic->delClothes($id);
+    public function do_del($clothesID){
+        $result = $this->clothesLogic->delClothes($clothesID);
 
         $this->ajaxAuto($result,'删除');
     }

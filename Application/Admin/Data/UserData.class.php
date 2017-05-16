@@ -2,6 +2,8 @@
 
 namespace Admin\Data;
 
+use Admin\Enum\BaseEnum;
+
 class UserData extends BaseData{
 
     //定义表前缀
@@ -26,6 +28,8 @@ class UserData extends BaseData{
         if (isset($conditions['userPhone']) && !empty($conditions['userPhone'])) {
             $where['user.userPhone'] = array('EQ', $conditions['userPhone']);
         }
+
+        $where['user.status'] = array('EQ', BaseEnum::ACTIVE);
 
         return $where;
     }

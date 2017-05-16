@@ -80,14 +80,22 @@ class ArticleLogic extends BaseLogic{
      */
     public function delArticle($sayID){
         $Saytexttable = D('Saytexttable');
-        $Sayable = D('Saytable');
+        $Saytable = D('Saytable');
+        $Daytask = D('Daytask');
+        $Achiveprogress = D('Achiveprogress');
 
         $Saytexttable->startTrans();
+        $userID = $Saytexttable->where("sayID = %d",$sayID)->getField('userID');
+
         $flag1 = $Saytexttable->where('sayID = %d',$sayID)->delete();
-        $flag2 = $Sayable->where('sayID = %d',$sayID)->delete();
+        $flag2 = $Saytable->where('sayID = %d',$sayID)->delete();
 
         if($flag1 !== false && $flag2 !== false){
-            $Saytexttable->commit();
+            $Daytask->where('userID = %d',$userID)->setDec('dayRelease');
+            $result = $Achiveprogress->where('userID = %d',$userID)->setDec('Release')->buildSql();
+
+            var_dump($result);
+            $Saytexttable->rollback();
             return true;
         }else{
             $Saytexttable->rollback();
@@ -105,8 +113,11 @@ class ArticleLogic extends BaseLogic{
         $Daytask = D('Daytask');
         $Achiveprogress = D('Achiveprogress');
 
-        $sayText = $Saytexttable->where("number = %d",$number)->find();
+        $userID = $Saytexttable->where("number = %d",$number)->getField('userID');
 
-        return true;
+        $Daytask->where('userID = %d',$userID)->setDec('daycomment');
+        $Achiveprogress->where('userID = %d',$userID)->setDec('comment');
+
+        return $Saytexttable->where("number = %d",$number)->delete();
     }
 }

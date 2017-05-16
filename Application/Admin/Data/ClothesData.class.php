@@ -2,6 +2,8 @@
 
 namespace Admin\Data;
 
+use Admin\Enum\BaseEnum;
+
 class ClothesData extends BaseData{
 
     //定义表前缀
@@ -18,6 +20,8 @@ class ClothesData extends BaseData{
         if (isset($conditions['clothesName']) && !empty($conditions['clothesName'])) {
             $where['clothes.clothesName'] = array('LIKE', '%' . $conditions['clothesName'] . '%');
         }
+
+        $where['clothes.status'] = array('EQ', BaseEnum::ACTIVE);
 
         return $where;
     }
