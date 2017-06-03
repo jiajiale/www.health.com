@@ -1,6 +1,7 @@
 <?php
 namespace Api\Controller\V1;
 use Api\Controller\BaseController;
+use Think\Log;
 
 class ArchiveController extends BaseController{
 
@@ -186,15 +187,14 @@ class ArchiveController extends BaseController{
         $SuccessTask = D('Successtask');
         $AchiveProgress = D('Achiveprogress');
 
-        $selectZan = $AchiveProgress->where("userID = %d",$data['userID'])->select();
+        $selectZan = $AchiveProgress->where("userID = %d",$data['userID'])->find();
 
         $flag1 = false;
         if($selectZan){
             if($data['taskID'] == 0){
-                $flag1 = $AchiveProgress->where("userID = %d",$data['userID'])->setField(array(
-                    "accumulateSign" => $selectZan['accumulateSign'] + 1,
-                    "dayTaskNum" => $selectZan['dayTaskNum'] + 1
-                ));
+                $selectZan['accumulateSign'] = $selectZan['accumulateSign'] + 1;
+                $selectZan['dayTaskNum'] = $selectZan['dayTaskNum'] + 1;
+                $flag1 = $AchiveProgress->where("userID = %d",$data['userID'])->save($selectZan);
             }else{
                 $flag1 = $AchiveProgress->where("userID = %d",$data['userID'])->setInc('dayTaskNum');
             }
