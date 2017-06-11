@@ -33,8 +33,6 @@ class BaseController
 	
         Log::write('[请求参数]:'.$this->request);
 
-        Log::write('[请求参数]:'.$this->request);
-
         $this->request = json_clean_decode($this->request,true);
 
         $this->validator = new Validator($this->request);

@@ -26,6 +26,9 @@ class ImageController extends BaseController {
         // 缩略图保存路径
 
         // 上传文件(加锁)
+        if(isset($_FILES['file1'])){
+            unset($_FILES['file1']);
+        }
         $info   =   $upload->upload();
         if(!$info) {
             // 上传错误提示错误信息

@@ -646,6 +646,7 @@ function uploadImageSingle(selector,preview_box,preview_input,hidden_input){
             // 添加参数
             rst.formData.append('size', rst.fileLen);
             rst.formData.append('base64', rst.base64);
+            rst.formData.append('origin', rst.origin);
             // 触发上传
             xhr.send(rst.formData);
 
